@@ -1,0 +1,17 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="TestSuite" verbose="1">
+  <test name="unitTests">
+    <groups>
+      <run>
+        <include name="unitTest"/>
+        <include name="learningTest"/>
+      </run>
+    </groups>
+    <packages>
+      <package name="com.maxheapsize.quant.*"/>
+    </packages>
+  </test>
+
+
+</suite>
