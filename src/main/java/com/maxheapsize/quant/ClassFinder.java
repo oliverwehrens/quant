@@ -7,8 +7,8 @@ import java.util.*;
 
 public class ClassFinder {
 
-  private final String SOURCE_FILE_SUFFIX = "java";
-  private final boolean RECURSIVE_SEARCH = true;
+  private final static String SOURCE_FILE_SUFFIX = "java";
+  private final static boolean RECURSIVE_SEARCH = true;
   private int ZERO_BASED_OFFSET = 1;
   private String testSourcePath;
   private List<String> allFullyQualifiedTestNames = new ArrayList<String>();

@@ -1,13 +1,12 @@
 package com.maxheapsize.quant.testng;
 
-import com.maxheapsize.quant.DisabledTestFinder;
 import org.testng.annotations.Test;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.*;
 
-public class TestNGDisabledTestFinder extends TestNGBase implements DisabledTestFinder {
+public class TestNGDisabledTestFinder extends TestNGBase implements com.maxheapsize.quant.DisabledTestFinder {
 
   private List<Method> disabledTests = new ArrayList<Method>();
 
@@ -19,7 +18,7 @@ public class TestNGDisabledTestFinder extends TestNGBase implements DisabledTest
       this.klass = klass;
     }
 
-    public DisabledTestFinder build() {
+    public com.maxheapsize.quant.DisabledTestFinder build() {
       return new TestNGDisabledTestFinder(this);
     }
   }

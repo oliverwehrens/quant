@@ -1,13 +1,12 @@
 package com.maxheapsize.quant.testng;
 
-import com.maxheapsize.quant.TestClassTester;
 import org.testng.annotations.Test;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.*;
 
-public class TestNGTestClassTester extends TestNGBase implements TestClassTester {
+public class TestNGClassTester extends TestNGBase implements com.maxheapsize.quant.ClassTester {
 
   private boolean validTestAnnotationWithTestGroupOnClass;
 
@@ -32,12 +31,12 @@ public class TestNGTestClassTester extends TestNGBase implements TestClassTester
       return this;
     }
 
-    public TestClassTester build() {
-      return new TestNGTestClassTester(this);
+    public com.maxheapsize.quant.ClassTester build() {
+      return new TestNGClassTester(this);
     }
   }
 
-  private TestNGTestClassTester(Builder builder) {
+  private TestNGClassTester(Builder builder) {
     super(builder.klass);
     this.klass = builder.klass;
     this.validTestGroups = builder.validTestGroups;
@@ -62,7 +61,7 @@ public class TestNGTestClassTester extends TestNGBase implements TestClassTester
     result.append("\n----------------------------\n");
     result.append(reportMethods("Public void methods", publicVoidMethods));
     result.append(reportMethods("Non TestAnnotated methods", nonTestAnnotatedPublicVoidMethods));
-    result.append("* Test annotation with TestGroups on Class: " + new Boolean(validTestAnnotationWithTestGroupOnClass)).append("\n");
+    result.append("* Test annotation with TestGroups on Class: ").append(Boolean.valueOf(validTestAnnotationWithTestGroupOnClass)).append("\n");
     return result.toString();
   }
 

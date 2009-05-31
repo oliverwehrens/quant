@@ -1,5 +1,5 @@
 package com.maxheapsize.quant;
 
-public interface TestClassTester {
+public interface ClassTester {
   boolean allTestMethodsHaveValidTestGroup();
 }

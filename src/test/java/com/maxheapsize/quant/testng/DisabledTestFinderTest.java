@@ -1,6 +1,5 @@
 package com.maxheapsize.quant.testng;
 
-import com.maxheapsize.quant.DisabledTestFinder;
 import com.maxheapsize.quant.testclasses.*;
 import static org.testng.Assert.*;
 import org.testng.annotations.Test;
@@ -8,7 +7,7 @@ import org.testng.annotations.Test;
 @Test(groups = "unitTest")
 public class DisabledTestFinderTest {
 
-  private DisabledTestFinder unitUnderTest;
+  private com.maxheapsize.quant.DisabledTestFinder unitUnderTest;
 
   @Test
   public void testDisabledTests() {

@@ -21,7 +21,9 @@
       <url>LICENSE.txt</url>
     </license>
   </licenses>
+
   <dependencies>
+
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
@@ -29,17 +31,11 @@
       <classifier>jdk15</classifier>
       <scope>compile</scope>
     </dependency>
+
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-io</artifactId>
       <version>1.3.2</version>
-    </dependency>
-
-    <dependency>
-      <groupId>uk.co.flamingpenguin.jewelcli</groupId>
-      <artifactId>jewelcli</artifactId>
-      <version>0.59</version>
-      <scope>compile</scope>
     </dependency>
 
   </dependencies>
@@ -74,7 +70,6 @@
           <archive>
             <manifest>
               <addClasspath>true</addClasspath>
-              <mainClass>com.maxheapsize.quant.Cli</mainClass>
               <packageName>com.maxheapsize.quant.testng</packageName>
               <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
               <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
@@ -94,15 +89,9 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>com.maxheapsize.quant.Cli</mainClass>
               <addClasspath>true</addClasspath>
               <classpathPrefix>lib/</classpathPrefix>
             </manifest>
-
-            <manifestEntries>
-              <Class-Path>. test.jar</Class-Path>
-            </manifestEntries>
-
           </archive>
 
           <descriptorRefs>

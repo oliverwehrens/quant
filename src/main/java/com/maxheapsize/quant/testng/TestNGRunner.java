@@ -11,8 +11,8 @@ public class TestNGRunner {
     ClassFinder classFinder = new ClassFinder.Builder(sourceDirectory).build();
     List<Class> classes = classFinder.getClassList();
     for (Class klass : classes) {
-      TestClassTester testAnnotationTester = new TestNGTestClassTester.Builder(klass).build();
-      if (!testAnnotationTester.allTestMethodsHaveValidTestGroup()) {
+      ClassTester annotationTester = new TestNGClassTester.Builder(klass).build();
+      if (!annotationTester.allTestMethodsHaveValidTestGroup()) {
         System.out.println("Some (all) methods of " + klass.getName() + " do not have a test group.");
       }
     }
