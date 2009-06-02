@@ -15,7 +15,7 @@ public class ClassFinderTest {
     unitUnderTest = new ClassFinder.Builder("src/test/java").build();
 
     List<Class> classes = unitUnderTest.getClassList();
-    Assert.assertSame(classes.size(), 13);
+    Assert.assertSame(classes.size(), 12);
   }
 
   @Test
@@ -24,5 +24,13 @@ public class ClassFinderTest {
 
     List<Class> classes = unitUnderTest.getClassList();
     Assert.assertSame(classes.size(), 4);
+  }
+
+  @Test
+  public void testExcludeAllPackages() {
+    unitUnderTest = new ClassFinder.Builder("src/test/java").addExcludedPackage("com.maxheapsize").build();
+
+    List<Class> classes = unitUnderTest.getClassList();
+    Assert.assertSame(classes.size(), 0);
   }
 }

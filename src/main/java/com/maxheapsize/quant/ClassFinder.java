@@ -83,7 +83,7 @@ public class ClassFinder {
   private boolean isInExcludedPackage(String classNameFromPath) {
     boolean result = false;
     for (String excludedPackage : excludedPackages) {
-      if (classNameFromPath.contains("." + excludedPackage + ".")) {
+      if (classNameFromPath.contains(excludedPackage)) {
         return true;
       }
     }

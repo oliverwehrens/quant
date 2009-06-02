@@ -1,5 +1,6 @@
 package com.maxheapsize.quant.testng;
 
+import com.maxheapsize.quant.ClassTester;
 import org.testng.annotations.Test;
 
 import java.lang.annotation.Annotation;
@@ -17,7 +18,7 @@ public class TestNGClassTester extends TestNGBase implements com.maxheapsize.qua
 
   // Builder
 
-  public static class Builder {
+  protected static class Builder {
     private final Class klass;
     private List<String> validTestGroups = new ArrayList<String>();
 
@@ -31,9 +32,13 @@ public class TestNGClassTester extends TestNGBase implements com.maxheapsize.qua
       return this;
     }
 
-    public com.maxheapsize.quant.ClassTester build() {
+    public ClassTester build() {
       return new TestNGClassTester(this);
     }
+  }
+
+  public static Builder createBuilder(Class klass) {
+    return new Builder(klass);
   }
 
   private TestNGClassTester(Builder builder) {

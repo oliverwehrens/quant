@@ -1,5 +1,6 @@
 package com.maxheapsize.quant.testng;
 
+import com.maxheapsize.quant.DisabledTestFinder;
 import org.testng.annotations.Test;
 
 import java.lang.annotation.Annotation;
@@ -10,17 +11,21 @@ public class TestNGDisabledTestFinder extends TestNGBase implements com.maxheaps
 
   private List<Method> disabledTests = new ArrayList<Method>();
 
-  public static class Builder {
-    private Class klass;
+  protected static class Builder {
+    private static Class klass;
 
     public Builder(Class klass) {
       super();
       this.klass = klass;
     }
 
-    public com.maxheapsize.quant.DisabledTestFinder build() {
+    public DisabledTestFinder build() {
       return new TestNGDisabledTestFinder(this);
     }
+  }
+
+  public static Builder createBuilder(Class klass) {
+    return new Builder(klass);
   }
 
   private TestNGDisabledTestFinder(Builder builder) {

@@ -16,50 +16,50 @@ public class TestAnnotationTesterTest {
 
   @Test
   public void testAnnotationOnClass() {
-    unitUnder = new TestNGClassTester.Builder(AnnotationOnlyOnClassWithTestGroup.class).addTestGroup(TESTGROUP_UNITTEST).build();
+    unitUnder = TestNGClassTester.createBuilder(AnnotationOnlyOnClassWithTestGroup.class).addTestGroup(TESTGROUP_UNITTEST).build();
     assertTrue(unitUnder.allTestMethodsHaveValidTestGroup());
   }
 
   @Test
   public void testNoAnnotation() {
-    unitUnder = new TestNGClassTester.Builder(NoAnnotation.class).build();
+    unitUnder = TestNGClassTester.createBuilder(NoAnnotation.class).build();
     assertFalse(unitUnder.allTestMethodsHaveValidTestGroup());
   }
 
   @Test
   public void testWrongTestGroupOnMethod() {
-    unitUnder = new TestNGClassTester.Builder(WrongTestGroupOnMethod.class).addTestGroup(TESTGROUP_UNITTEST).build();
+    unitUnder = TestNGClassTester.createBuilder(WrongTestGroupOnMethod.class).addTestGroup(TESTGROUP_UNITTEST).build();
     assertFalse(unitUnder.allTestMethodsHaveValidTestGroup());
   }
 
   @Test
   public void testWrongTestGroupOnClass() {
-    unitUnder = new TestNGClassTester.Builder(WrongTestGroupOnClass.class).addTestGroup(TESTGROUP_UNITTEST).build();
+    unitUnder = TestNGClassTester.createBuilder(WrongTestGroupOnClass.class).addTestGroup(TESTGROUP_UNITTEST).build();
     assertFalse(unitUnder.allTestMethodsHaveValidTestGroup());
   }
 
   @Test
   public void testValidTestGroup() {
-    unitUnder = new TestNGClassTester.Builder(TestAnnotationOnlyOnMethod.class).addTestGroup(TESTGROUP_UNITTEST).build();
+    unitUnder = TestNGClassTester.createBuilder(TestAnnotationOnlyOnMethod.class).addTestGroup(TESTGROUP_UNITTEST).build();
     assertTrue(unitUnder.allTestMethodsHaveValidTestGroup());
   }
 
   @Test
   public void testTwoValidTestGroups() {
-    unitUnder = new TestNGClassTester.Builder(TwoTestGroups.class).addTestGroup(TESTGROUP_GROUPONE).addTestGroup(TESTGROUP_GROUPTWO).build();
+    unitUnder = TestNGClassTester.createBuilder(TwoTestGroups.class).addTestGroup(TESTGROUP_GROUPONE).addTestGroup(TESTGROUP_GROUPTWO).build();
     assertTrue(unitUnder.allTestMethodsHaveValidTestGroup());
   }
 
   @Test
   public void testOneMethodWithTestGroupSecondWithout() {
-    unitUnder = new TestNGClassTester.Builder(OneMethodWithTestGroupSecondWithout.class).addTestGroup(TESTGROUP_UNITTEST).build();
+    unitUnder = TestNGClassTester.createBuilder(OneMethodWithTestGroupSecondWithout.class).addTestGroup(TESTGROUP_UNITTEST).build();
     assertFalse(unitUnder.allTestMethodsHaveValidTestGroup());
   }
 
   @Test(timeOut = 1000)
   public void testPerformance() {
     for (int i = 0; i < 10000; i++) {
-      com.maxheapsize.quant.ClassTester performance = new TestNGClassTester.Builder(OneMethodWithTestGroupSecondWithout.class).addTestGroup(TESTGROUP_UNITTEST).build();
+      com.maxheapsize.quant.ClassTester performance = TestNGClassTester.createBuilder(OneMethodWithTestGroupSecondWithout.class).addTestGroup(TESTGROUP_UNITTEST).build();
     }
   }
 }
