@@ -8,7 +8,7 @@ import org.testng.annotations.Test;
 @Test(groups = "unitTest")
 public class TestAnnotationTesterTest {
 
-  ClassTester unitUnder;
+  ClassTester unitUnderTest;
   public static final String TESTGROUP_UNITTEST = "testUnitTest";
   public static final String TESTGROUP_GROUPONE = "testGroup1";
   public static final String TESTGROUP_GROUPTWO = "testGroup2";
@@ -16,50 +16,56 @@ public class TestAnnotationTesterTest {
 
   @Test
   public void testAnnotationOnClass() {
-    unitUnder = TestNGClassTester.createBuilder(AnnotationOnlyOnClassWithTestGroup.class).addTestGroup(TESTGROUP_UNITTEST).build();
-    assertTrue(unitUnder.allTestMethodsHaveValidTestGroup());
+    unitUnderTest = TestNGClassTester.createBuilder(AnnotationOnlyOnClassWithTestGroup.class).addTestGroup(TESTGROUP_UNITTEST).build();
+    assertFalse(unitUnderTest.hasMissingAnnotations());
   }
 
   @Test
   public void testNoAnnotation() {
-    unitUnder = TestNGClassTester.createBuilder(NoAnnotation.class).build();
-    assertFalse(unitUnder.allTestMethodsHaveValidTestGroup());
+    unitUnderTest = TestNGClassTester.createBuilder(NoAnnotation.class).build();
+    assertTrue(unitUnderTest.hasMissingAnnotations());
   }
 
   @Test
   public void testWrongTestGroupOnMethod() {
-    unitUnder = TestNGClassTester.createBuilder(WrongTestGroupOnMethod.class).addTestGroup(TESTGROUP_UNITTEST).build();
-    assertFalse(unitUnder.allTestMethodsHaveValidTestGroup());
+    unitUnderTest = TestNGClassTester.createBuilder(WrongTestGroupOnMethod.class).addTestGroup(TESTGROUP_UNITTEST).build();
+    assertTrue(unitUnderTest.hasMissingAnnotations());
   }
 
   @Test
   public void testWrongTestGroupOnClass() {
-    unitUnder = TestNGClassTester.createBuilder(WrongTestGroupOnClass.class).addTestGroup(TESTGROUP_UNITTEST).build();
-    assertFalse(unitUnder.allTestMethodsHaveValidTestGroup());
+    unitUnderTest = TestNGClassTester.createBuilder(WrongTestGroupOnClass.class).addTestGroup(TESTGROUP_UNITTEST).build();
+    assertTrue(unitUnderTest.hasMissingAnnotations());
   }
 
   @Test
   public void testValidTestGroup() {
-    unitUnder = TestNGClassTester.createBuilder(TestAnnotationOnlyOnMethod.class).addTestGroup(TESTGROUP_UNITTEST).build();
-    assertTrue(unitUnder.allTestMethodsHaveValidTestGroup());
+    unitUnderTest = TestNGClassTester.createBuilder(TestAnnotationOnlyOnMethod.class).addTestGroup(TESTGROUP_UNITTEST).build();
+    assertFalse(unitUnderTest.hasMissingAnnotations());
   }
 
   @Test
   public void testTwoValidTestGroups() {
-    unitUnder = TestNGClassTester.createBuilder(TwoTestGroups.class).addTestGroup(TESTGROUP_GROUPONE).addTestGroup(TESTGROUP_GROUPTWO).build();
-    assertTrue(unitUnder.allTestMethodsHaveValidTestGroup());
+    unitUnderTest = TestNGClassTester.createBuilder(TwoTestGroups.class).addTestGroup(TESTGROUP_GROUPONE).addTestGroup(TESTGROUP_GROUPTWO).build();
+    assertFalse(unitUnderTest.hasMissingAnnotations());
   }
 
   @Test
   public void testOneMethodWithTestGroupSecondWithout() {
-    unitUnder = TestNGClassTester.createBuilder(OneMethodWithTestGroupSecondWithout.class).addTestGroup(TESTGROUP_UNITTEST).build();
-    assertFalse(unitUnder.allTestMethodsHaveValidTestGroup());
+    unitUnderTest = TestNGClassTester.createBuilder(OneMethodWithTestGroupSecondWithout.class).addTestGroup(TESTGROUP_UNITTEST).build();
+    assertTrue(unitUnderTest.hasMissingAnnotations());
   }
 
   @Test(timeOut = 1000)
   public void testPerformance() {
     for (int i = 0; i < 10000; i++) {
-      com.maxheapsize.quant.ClassTester performance = TestNGClassTester.createBuilder(OneMethodWithTestGroupSecondWithout.class).addTestGroup(TESTGROUP_UNITTEST).build();
+      ClassTester performance = TestNGClassTester.createBuilder(OneMethodWithTestGroupSecondWithout.class).addTestGroup(TESTGROUP_UNITTEST).build();
     }
+  }
+
+  @Test
+  public void testUseOnlyAnntatedMethods() {
+    unitUnderTest = TestNGClassTester.createBuilder(OnlyOneMethodWithTest.class).useOnlyAnnotatedMethods().build();
+    assertFalse(unitUnderTest.hasMissingAnnotations());
   }
 }

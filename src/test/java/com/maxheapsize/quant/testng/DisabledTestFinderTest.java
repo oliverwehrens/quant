@@ -27,10 +27,4 @@ public class DisabledTestFinderTest {
     unitUnderTest = TestNGDisabledTestFinder.createBuilder(DisabledTests.class).build();
     assertSame(unitUnderTest.getDisabledTests().size(), 1);
   }
-
-  @Test
-  public void testBuilder() {
-    unitUnderTest = TestNGDisabledTestFinder.createBuilder(DisabledTests.class).build();
-    assertSame(unitUnderTest.getDisabledTests().size(), 1);
-  }
 }

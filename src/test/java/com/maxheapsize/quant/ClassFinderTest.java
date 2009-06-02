@@ -15,7 +15,7 @@ public class ClassFinderTest {
     unitUnderTest = new ClassFinder.Builder("src/test/java").build();
 
     List<Class> classes = unitUnderTest.getClassList();
-    Assert.assertSame(classes.size(), 12);
+    Assert.assertSame(classes.size(), 13);
   }
 
   @Test

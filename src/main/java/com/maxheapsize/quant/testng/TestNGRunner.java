@@ -12,7 +12,7 @@ public class TestNGRunner {
     List<Class> classes = classFinder.getClassList();
     for (Class klass : classes) {
       ClassTester annotationTester = new TestNGClassTester.Builder(klass).build();
-      if (!annotationTester.allTestMethodsHaveValidTestGroup()) {
+      if (annotationTester.hasMissingAnnotations()) {
         System.out.println("Some (all) methods of " + klass.getName() + " do not have a test group.");
       }
     }

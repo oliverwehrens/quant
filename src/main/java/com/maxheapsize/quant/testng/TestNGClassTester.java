@@ -7,7 +7,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.*;
 
-public class TestNGClassTester extends TestNGBase implements com.maxheapsize.quant.ClassTester {
+public class TestNGClassTester extends TestNGBase implements ClassTester {
 
   private boolean validTestAnnotationWithTestGroupOnClass;
 
@@ -15,12 +15,14 @@ public class TestNGClassTester extends TestNGBase implements com.maxheapsize.qua
   private List<String> validTestGroups = new ArrayList<String>();
   private List<Method> nonTestAnnotatedPublicVoidMethods = new ArrayList<Method>();
   private List<Method> methodsWithWrongTestGroup = new ArrayList<Method>();
+  private boolean useOnlyAnnotatedMethods = false;
 
   // Builder
 
   protected static class Builder {
     private final Class klass;
     private List<String> validTestGroups = new ArrayList<String>();
+    private boolean useOnlyAnnotatedMethods = false;
 
     public Builder(Class klass) {
       super();
@@ -29,6 +31,11 @@ public class TestNGClassTester extends TestNGBase implements com.maxheapsize.qua
 
     public Builder addTestGroup(String testGroupName) {
       validTestGroups.add(testGroupName);
+      return this;
+    }
+
+    public Builder useOnlyAnnotatedMethods() {
+      useOnlyAnnotatedMethods = true;
       return this;
     }
 
@@ -45,19 +52,14 @@ public class TestNGClassTester extends TestNGBase implements com.maxheapsize.qua
     super(builder.klass);
     this.klass = builder.klass;
     this.validTestGroups = builder.validTestGroups;
+    this.useOnlyAnnotatedMethods = builder.useOnlyAnnotatedMethods;
     examineClass();
   }
 
   // Public methods
 
-  public boolean allTestMethodsHaveValidTestGroup() {
-    if (validTestAnnotationWithTestGroupOnClass) {
-      return true;
-    }
-    else if (methodsWithWrongTestGroup.isEmpty()) {
-      return true;
-    }
-    return false;
+  public boolean hasMissingAnnotations() {
+    return !allTestMethodsHaveValidTestGroup();
   }
 
   public String toString() {
@@ -72,17 +74,27 @@ public class TestNGClassTester extends TestNGBase implements com.maxheapsize.qua
 
   // Private Methods
 
+  private boolean allTestMethodsHaveValidTestGroup() {
+    if (validTestAnnotationWithTestGroupOnClass) {
+      return true;
+    }
+    else if (methodsWithWrongTestGroup.isEmpty()) {
+      return true;
+    }
+    return false;
+  }
+
   private void examineClass() {
     publicVoidMethods = getPublicVoidMethods(klass);
     nonTestAnnotatedPublicVoidMethods = getNonTestAnnotatedPublicVoidMethod(publicVoidMethods);
     validTestAnnotationWithTestGroupOnClass = checkForTestAnnotationWithValidTestGroupOnClass();
-    methodsWithWrongTestGroup = checkForMethodsWithWrongTestGroup();
+    methodsWithWrongTestGroup = checkMethodsToConfirmToSpecification();
   }
 
-  private List<Method> checkForMethodsWithWrongTestGroup() {
+  private List<Method> checkMethodsToConfirmToSpecification() {
     List<Method> result = new ArrayList<Method>();
     for (Method publicVoidMethod : publicVoidMethods) {
-      if (!hasTestAnnotationWithValidTestGroup(publicVoidMethod)) {
+      if (!methodConfirmsToSpecification(publicVoidMethod)) {
         result.add(publicVoidMethod);
       }
     }
@@ -148,10 +160,13 @@ public class TestNGClassTester extends TestNGBase implements com.maxheapsize.qua
     return method.isAnnotationPresent(Test.class);
   }
 
-  private boolean hasTestAnnotationWithValidTestGroup(Method method) {
+  private boolean methodConfirmsToSpecification(Method method) {
     Annotation[] annotations = method.getAnnotations();
+    boolean hasTestAnnotations = false;
     for (Annotation annotation : annotations) {
+
       if (isTestAnnotation(annotation)) {
+        hasTestAnnotations = true;
         if (expectedTestGroupIsEmpty()) {
           return true;
         }
@@ -164,6 +179,9 @@ public class TestNGClassTester extends TestNGBase implements com.maxheapsize.qua
           }
         }
       }
+    }
+    if (!hasTestAnnotations && useOnlyAnnotatedMethods) {
+      return true;
     }
     return false;
   }
