@@ -26,31 +26,65 @@ public class TestNGClassTester extends TestNGBase implements ClassTester {
     private boolean useOnlyAnnotatedMethods = false;
     private boolean ignoreAbstractClass = true;
 
+    /**
+     * Constructs a ClassTester which will examine the given class.
+     *
+     * @param klass Class to be examined.
+     */
     public Builder(Class klass) {
       super();
       this.klass = klass;
     }
 
+    /**
+     * Add a test group to the pool of test groups which all test methods should belong to.
+     *
+     * @param testGroupName
+     *
+     * @return Builder
+     */
     public Builder addTestGroup(String testGroupName) {
       validTestGroups.add(testGroupName);
       return this;
     }
 
+    /**
+     * Only check methods which are annotated. Do not report methods which are public void but do not have a @Test annotation.
+     *
+     * @return Builder
+     */
     public Builder useOnlyAnnotatedMethods() {
       useOnlyAnnotatedMethods = true;
       return this;
     }
 
+    /**
+     * Also run the checks against abstract classes.
+     *
+     * @return Builder
+     */
     public Builder doNotIgnoreAbstractClass() {
       ignoreAbstractClass = false;
       return this;
     }
 
+    /**
+     * Build the ClassTester
+     *
+     * @return ClassTester
+     */
     public ClassTester build() {
       return new TestNGClassTester(this);
     }
   }
 
+  /**
+   * Creates a Builder to create the ClassTester.
+   *
+   * @param klass Class to be examined.
+   *
+   * @return Builder
+   */
   public static Builder createBuilder(Class klass) {
     return new Builder(klass);
   }
@@ -64,11 +98,16 @@ public class TestNGClassTester extends TestNGBase implements ClassTester {
     examineClass();
   }
 
+  private void examineClass() {
+    publicVoidMethods = getPublicVoidMethods(klass);
+    nonTestAnnotatedPublicVoidMethods = getNonTestAnnotatedPublicVoidMethod(publicVoidMethods);
+    validTestAnnotationWithTestGroupOnClass = checkForTestAnnotationWithValidTestGroupOnClass();
+    methodsWithWrongTestGroup = checkMethodsToConfirmToSpecification();
+  }
+
   // Public methods
 
-
-
-  public boolean hasMissingAnnotations() {
+  public boolean isInvalidTestClass() {
     return !(allTestMethodsHaveValidTestGroup() || (isAbstractClass() && ignoreAbstractClass));
   }
 
@@ -79,19 +118,20 @@ public class TestNGClassTester extends TestNGBase implements ClassTester {
     result.append(reportMethods("Public void methods", publicVoidMethods));
     result.append(reportMethods("Non TestAnnotated methods", nonTestAnnotatedPublicVoidMethods));
     result.append("* Test annotation with TestGroups on Class: ").append(Boolean.valueOf(validTestAnnotationWithTestGroupOnClass)).append("\n");
-    result.append("* Allowed TestGroups \n");
+    result.append("* Allowed TestGroups : ");
     for (String validTestGroup : validTestGroups) {
-      result.append("   - "+validTestGroup+"\n");
+      result.append(" + " + validTestGroup);
     }
+    result.append("\n");
     return result.toString();
   }
+
+  // Private Methods
 
   private boolean isAbstractClass() {
     int modifier = klass.getModifiers();
     return Modifier.isAbstract(modifier);
   }
-
-  // Private Methods
 
   private boolean allTestMethodsHaveValidTestGroup() {
     if (validTestAnnotationWithTestGroupOnClass) {
@@ -101,13 +141,6 @@ public class TestNGClassTester extends TestNGBase implements ClassTester {
       return true;
     }
     return false;
-  }
-
-  private void examineClass() {
-    publicVoidMethods = getPublicVoidMethods(klass);
-    nonTestAnnotatedPublicVoidMethods = getNonTestAnnotatedPublicVoidMethod(publicVoidMethods);
-    validTestAnnotationWithTestGroupOnClass = checkForTestAnnotationWithValidTestGroupOnClass();
-    methodsWithWrongTestGroup = checkMethodsToConfirmToSpecification();
   }
 
   private List<Method> checkMethodsToConfirmToSpecification() {
@@ -206,8 +239,12 @@ public class TestNGClassTester extends TestNGBase implements ClassTester {
   }
 
   private String[] getTestGroupsFromAnnotation(Annotation annotation) {
-    Test testAnnotation = (Test) annotation;
-    String[] testAnnotationGroups = testAnnotation.groups();
+
+    String[] testAnnotationGroups = {};
+    if (annotation.annotationType().equals(Test.class)) {
+      testAnnotationGroups = ((Test) annotation).groups();
+    }
+
     return testAnnotationGroups;
   }
 }

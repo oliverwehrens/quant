@@ -1,6 +1,6 @@
 package com.maxheapsize.quant.testng;
 
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
@@ -10,13 +10,32 @@ public abstract class TestNGBase {
 
   protected List<Method> publicVoidMethods = new ArrayList<Method>();
 
+  Map<Class, String> annotations = new HashMap<Class, String>();
+
   boolean isTestAnnotation(Annotation annotation) {
-    return annotation.annotationType().equals(Test.class);
+    Class annotationType = annotation.annotationType();
+    return annotations.containsKey(annotationType);
   }
 
   public TestNGBase(Class klass) {
     super();
+    storeTestAnnotation(BeforeSuite.class);
+    storeTestAnnotation(AfterSuite.class);
+    storeTestAnnotation(BeforeTest.class);
+    storeTestAnnotation(AfterTest.class);
+    storeTestAnnotation(BeforeGroups.class);
+    storeTestAnnotation(AfterGroups.class);
+    storeTestAnnotation(BeforeClass.class);
+    storeTestAnnotation(AfterClass.class);
+    storeTestAnnotation(BeforeMethod.class);
+    storeTestAnnotation(AfterMethod.class);
+    storeTestAnnotation(Test.class);
+
     publicVoidMethods = getPublicVoidMethods(klass);
+  }
+
+  private void storeTestAnnotation(Class testAnnotation) {
+    annotations.put(testAnnotation, testAnnotation.getName());
   }
 
   List<Method> getPublicVoidMethods(Class klass) {

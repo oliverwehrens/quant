@@ -21,21 +21,44 @@ public class ClassFinder {
     String testSourcePath;
     List<String> excludedPackages = new ArrayList<String>();
 
+    /**
+     * Contructs a ClassFinder which will try to load all classes under the given testSourcePath.
+     *
+     * @param testSourcePath
+     */
     public Builder(String testSourcePath) {
       super();
       this.testSourcePath = testSourcePath;
     }
 
+    /**
+     * Classes with the specified packagename will not be loaded. 'notInclude' will exclude all classes with the String
+     * 'notInclude' in the fully qualified classname.
+     *
+     * @param packageName
+     *
+     * @return Builder
+     */
     public Builder addExcludedPackage(String packageName) {
       excludedPackages.add(packageName);
       return this;
     }
 
+    /**
+     * Return a ClassFinder with the given builder specifictions.
+     *
+     * @return ClassFinder
+     */
     public ClassFinder build() {
       return new ClassFinder(testSourcePath, excludedPackages);
     }
   }
 
+  /**
+   * Returns the list of classes which are loaded according to the specifications.
+   *
+   * @return List of classes
+   */
   public List<Class> getClassList() {
     return classList;
   }

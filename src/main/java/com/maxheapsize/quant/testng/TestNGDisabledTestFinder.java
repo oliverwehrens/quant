@@ -7,7 +7,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.*;
 
-public class TestNGDisabledTestFinder extends TestNGBase implements com.maxheapsize.quant.DisabledTestFinder {
+public class TestNGDisabledTestFinder extends TestNGBase implements DisabledTestFinder {
 
   private List<Method> disabledTests = new ArrayList<Method>();
 
@@ -49,7 +49,7 @@ public class TestNGDisabledTestFinder extends TestNGBase implements com.maxheaps
     for (Method method : publicVoidMethods) {
       Annotation[] annotations = method.getAnnotations();
       for (Annotation annotation : annotations) {
-        if (isTestAnnotation(annotation)) {
+        if (annotation.annotationType().equals(Test.class)) {
           Test testAnnotation = (Test) annotation;
           if (!testAnnotation.enabled()) {
             disabledTests.add(method);

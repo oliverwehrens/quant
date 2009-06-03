@@ -17,43 +17,43 @@ public class TestAnnotationTesterTest {
   @Test
   public void testAnnotationOnClass() {
     unitUnderTest = TestNGClassTester.createBuilder(AnnotationOnlyOnClassWithTestGroup.class).addTestGroup(TESTGROUP_UNITTEST).build();
-    assertFalse(unitUnderTest.hasMissingAnnotations());
+    assertFalse(unitUnderTest.isInvalidTestClass());
   }
 
   @Test
   public void testNoAnnotation() {
     unitUnderTest = TestNGClassTester.createBuilder(NoAnnotation.class).build();
-    assertTrue(unitUnderTest.hasMissingAnnotations());
+    assertTrue(unitUnderTest.isInvalidTestClass());
   }
 
   @Test
   public void testWrongTestGroupOnMethod() {
     unitUnderTest = TestNGClassTester.createBuilder(WrongTestGroupOnMethod.class).addTestGroup(TESTGROUP_UNITTEST).build();
-    assertTrue(unitUnderTest.hasMissingAnnotations());
+    assertTrue(unitUnderTest.isInvalidTestClass());
   }
 
   @Test
   public void testWrongTestGroupOnClass() {
     unitUnderTest = TestNGClassTester.createBuilder(WrongTestGroupOnClass.class).addTestGroup(TESTGROUP_UNITTEST).build();
-    assertTrue(unitUnderTest.hasMissingAnnotations());
+    assertTrue(unitUnderTest.isInvalidTestClass());
   }
 
   @Test
   public void testValidTestGroup() {
     unitUnderTest = TestNGClassTester.createBuilder(TestAnnotationOnlyOnMethod.class).addTestGroup(TESTGROUP_UNITTEST).build();
-    assertFalse(unitUnderTest.hasMissingAnnotations());
+    assertFalse(unitUnderTest.isInvalidTestClass());
   }
 
   @Test
   public void testTwoValidTestGroups() {
     unitUnderTest = TestNGClassTester.createBuilder(TwoTestGroups.class).addTestGroup(TESTGROUP_GROUPONE).addTestGroup(TESTGROUP_GROUPTWO).build();
-    assertFalse(unitUnderTest.hasMissingAnnotations());
+    assertFalse(unitUnderTest.isInvalidTestClass());
   }
 
   @Test
   public void testOneMethodWithTestGroupSecondWithout() {
     unitUnderTest = TestNGClassTester.createBuilder(OneMethodWithTestGroupSecondWithout.class).addTestGroup(TESTGROUP_UNITTEST).build();
-    assertTrue(unitUnderTest.hasMissingAnnotations());
+    assertTrue(unitUnderTest.isInvalidTestClass());
   }
 
   @Test(timeOut = 1000)
@@ -66,20 +66,30 @@ public class TestAnnotationTesterTest {
   @Test
   public void testUseOnlyAnntatedMethods() {
     unitUnderTest = TestNGClassTester.createBuilder(OnlyOneMethodWithTest.class).useOnlyAnnotatedMethods().build();
-    assertFalse(unitUnderTest.hasMissingAnnotations());
+    assertFalse(unitUnderTest.isInvalidTestClass());
   }
 
   @Test
   public void testDoNotIgnoreAbstractClass() {
     unitUnderTest = TestNGClassTester.createBuilder(AbstractTestClass.class).doNotIgnoreAbstractClass().build();
-    assertTrue(unitUnderTest.hasMissingAnnotations());
+    assertTrue(unitUnderTest.isInvalidTestClass());
   }
 
   @Test
   public void testIgnoreAbstractClass() {
     unitUnderTest = TestNGClassTester.createBuilder(AbstractTestClass.class).build();
-    assertFalse(unitUnderTest.hasMissingAnnotations());
+    assertFalse(unitUnderTest.isInvalidTestClass());
   }
 
+  @Test
+  public void testAllTestNGAnnotationsCountAsTestMethod() {
+    unitUnderTest = TestNGClassTester.createBuilder(CheckAllTestNGAnnotationsWithOutGroups.class).build();
+    assertFalse(unitUnderTest.isInvalidTestClass());
+  }
 
+  @Test
+  public void testFindSetupMethodWithoutGroup() {
+    unitUnderTest = TestNGClassTester.createBuilder(SetupMethodWithoutTestGroup.class).addTestGroup(TESTGROUP_UNITTEST).build();
+    assertTrue(unitUnderTest.isInvalidTestClass());
+  }
 }

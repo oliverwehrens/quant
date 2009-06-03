@@ -12,7 +12,8 @@ public class ClassFinderTest {
 
   @Test
   public void testFindClassesWithExcludedPackages() {
-    unitUnderTest = new ClassFinder.Builder("src/test/java").addExcludedPackage("testclasses").addExcludedPackage("learningtests").build();
+    unitUnderTest = new ClassFinder.Builder("src/test/java").addExcludedPackage("testclasses").
+        addExcludedPackage("learningtests").build();
 
     List<Class> classes = unitUnderTest.getClassList();
     Assert.assertSame(classes.size(), 4);
