@@ -11,7 +11,7 @@ public class TestNGDisabledTestFinder extends TestNGBase implements com.maxheaps
 
   private List<Method> disabledTests = new ArrayList<Method>();
 
-  protected static class Builder {
+  public static class Builder {
     private static Class klass;
 
     public Builder(Class klass) {

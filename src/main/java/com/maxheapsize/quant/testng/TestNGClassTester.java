@@ -4,7 +4,7 @@ import com.maxheapsize.quant.ClassTester;
 import org.testng.annotations.Test;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
+import java.lang.reflect.*;
 import java.util.*;
 
 public class TestNGClassTester extends TestNGBase implements ClassTester {
@@ -16,13 +16,15 @@ public class TestNGClassTester extends TestNGBase implements ClassTester {
   private List<Method> nonTestAnnotatedPublicVoidMethods = new ArrayList<Method>();
   private List<Method> methodsWithWrongTestGroup = new ArrayList<Method>();
   private boolean useOnlyAnnotatedMethods = false;
+  private boolean ignoreAbstractClass = true;
 
   // Builder
 
-  protected static class Builder {
+  public static class Builder {
     private final Class klass;
     private List<String> validTestGroups = new ArrayList<String>();
     private boolean useOnlyAnnotatedMethods = false;
+    private boolean ignoreAbstractClass = true;
 
     public Builder(Class klass) {
       super();
@@ -36,6 +38,11 @@ public class TestNGClassTester extends TestNGBase implements ClassTester {
 
     public Builder useOnlyAnnotatedMethods() {
       useOnlyAnnotatedMethods = true;
+      return this;
+    }
+
+    public Builder doNotIgnoreAbstractClass() {
+      ignoreAbstractClass = false;
       return this;
     }
 
@@ -53,13 +60,16 @@ public class TestNGClassTester extends TestNGBase implements ClassTester {
     this.klass = builder.klass;
     this.validTestGroups = builder.validTestGroups;
     this.useOnlyAnnotatedMethods = builder.useOnlyAnnotatedMethods;
+    this.ignoreAbstractClass = builder.ignoreAbstractClass;
     examineClass();
   }
 
   // Public methods
 
+
+
   public boolean hasMissingAnnotations() {
-    return !allTestMethodsHaveValidTestGroup();
+    return !(allTestMethodsHaveValidTestGroup() || (isAbstractClass() && ignoreAbstractClass));
   }
 
   public String toString() {
@@ -69,7 +79,16 @@ public class TestNGClassTester extends TestNGBase implements ClassTester {
     result.append(reportMethods("Public void methods", publicVoidMethods));
     result.append(reportMethods("Non TestAnnotated methods", nonTestAnnotatedPublicVoidMethods));
     result.append("* Test annotation with TestGroups on Class: ").append(Boolean.valueOf(validTestAnnotationWithTestGroupOnClass)).append("\n");
+    result.append("* Allowed TestGroups \n");
+    for (String validTestGroup : validTestGroups) {
+      result.append("   - "+validTestGroup+"\n");
+    }
     return result.toString();
+  }
+
+  private boolean isAbstractClass() {
+    int modifier = klass.getModifiers();
+    return Modifier.isAbstract(modifier);
   }
 
   // Private Methods

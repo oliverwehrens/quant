@@ -68,4 +68,18 @@ public class TestAnnotationTesterTest {
     unitUnderTest = TestNGClassTester.createBuilder(OnlyOneMethodWithTest.class).useOnlyAnnotatedMethods().build();
     assertFalse(unitUnderTest.hasMissingAnnotations());
   }
+
+  @Test
+  public void testDoNotIgnoreAbstractClass() {
+    unitUnderTest = TestNGClassTester.createBuilder(AbstractTestClass.class).doNotIgnoreAbstractClass().build();
+    assertTrue(unitUnderTest.hasMissingAnnotations());
+  }
+
+  @Test
+  public void testIgnoreAbstractClass() {
+    unitUnderTest = TestNGClassTester.createBuilder(AbstractTestClass.class).build();
+    assertFalse(unitUnderTest.hasMissingAnnotations());
+  }
+
+
 }
