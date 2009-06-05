@@ -1,10 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.maxheapsize</groupId>
     <artifactId>quant</artifactId>
     <packaging>jar</packaging>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.1</version>
     <name>quant</name>
     <description>Quant is a helper to detect files in your source directory which are not declared as test or do have
         disabled tests.
@@ -43,10 +42,10 @@
     </dependencies>
 
     <scm>
-        <connection>scm:svn:http://quant.googlecode.com/svn/trunk/</connection>
-        <developerConnection>scm:svn:https://quant.googlecode.com/svn/trunk/</developerConnection>
+        <connection>scm:svn:http://quant.googlecode.com/svn/tags/quant-0.1</connection>
+        <developerConnection>scm:svn:https://quant.googlecode.com/svn/tags/quant-0.1</developerConnection>
         <tag>HEAD</tag>
-        <url>http://code.google.com/p/quant/source/browse/</url>
+        <url>http://code.google.com/p/quant/source/browse/tags/quant-0.1</url>
     </scm>
 
     <issueManagement>
