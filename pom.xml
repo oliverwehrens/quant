@@ -54,24 +54,12 @@
         <url>http://code.google.com/p/quant/issues/list</url>
     </issueManagement>
 
-    <repositories>
+    <distributionManagement>
         <repository>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-                <checksumPolicy>warn</checksumPolicy>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>never</updatePolicy>
-                <checksumPolicy>fail</checksumPolicy>
-            </snapshots>
-            <id>defaultRepo</id>
-            <name>Maven Default Repository</name>
-            <url>http://repo1.maven.org/maven2/</url>
-            <layout>default</layout>
+            <id>maxheapsize-repository</id>
+            <url>scpexe://maxheapsize.com/maven2/repository</url>
         </repository>
-    </repositories>
+    </distributionManagement>
 
 
     <build>
@@ -131,8 +119,16 @@
                     </descriptorRefs>
                 </configuration>
             </plugin>
-
-
         </plugins>
+
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ssh-external</artifactId>
+                <version>1.0-alpha-5</version>
+            </extension>
+        </extensions>
+
+
     </build>
 </project>
