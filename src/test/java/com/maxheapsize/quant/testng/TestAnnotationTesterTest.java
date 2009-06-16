@@ -98,4 +98,16 @@ public class TestAnnotationTesterTest {
     unitUnderTest = TestNGClassTester.createBuilder(NonAtTestAnnotationWithGroup.class).addTestGroup(TESTGROUP_UNITTEST).build();
     assertFalse(unitUnderTest.isInvalidTestClass());
   }
+
+  @Test
+  public void testNoGroupOnAnnotationsJustOnClassWithDiffeentAnnotations() {
+    unitUnderTest = TestNGClassTester.createBuilder(NoGroupOnTestsJustOnClassWithDifferentAnnotations.class).addTestGroup(TESTGROUP_UNITTEST).build();
+    assertFalse(unitUnderTest.isInvalidTestClass());
+  }
+
+  @Test
+  public void testAnnotationOnlyOnTestClassWithoutTestGroup() {
+    unitUnderTest = TestNGClassTester.createBuilder(AnnotationOnlyOnTestClassWithoutTestGroup.class).addTestGroup(TESTGROUP_UNITTEST).build();
+    assertTrue(unitUnderTest.isInvalidTestClass());
+  }
 }

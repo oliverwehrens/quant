@@ -229,6 +229,9 @@ public class TestNGClassTester extends TestNGBase implements ClassTester {
         }
         else {
           String[] testAnnotationGroups = getTestGroupsFromAnnotation(annotation);
+          if (testAnnotationGroups.length == 0) {
+            return false;
+          }
           for (String testGroup : testAnnotationGroups) {
             if (testAnnotationGroupIsInExpectedTestGroup(testGroup)) {
               return true;
