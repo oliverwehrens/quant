@@ -10,7 +10,7 @@ public abstract class TestNGBase {
 
   protected List<Method> publicVoidMethods = new ArrayList<Method>();
 
-  Map<Class, String> annotations = new HashMap<Class, String>();
+  protected Map<Class, String> annotations = new HashMap<Class, String>();
 
   boolean isTestAnnotation(Annotation annotation) {
     Class annotationType = annotation.annotationType();
@@ -38,7 +38,7 @@ public abstract class TestNGBase {
     annotations.put(testAnnotation, testAnnotation.getName());
   }
 
-  List<Method> getPublicVoidMethods(Class klass) {
+  protected List<Method> getPublicVoidMethods(Class klass) {
     List<Method> result = new ArrayList<Method>();
 
     Method[] methods = klass.getDeclaredMethods();

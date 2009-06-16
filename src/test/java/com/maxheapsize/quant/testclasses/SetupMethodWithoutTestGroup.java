@@ -1,7 +1,9 @@
 package com.maxheapsize.quant.testclasses;
 
-import com.maxheapsize.quant.testng.TestAnnotationTesterTest;
-import org.testng.annotations.*;
+//import com.maxheapsize.quant.testng.TestAnnotationTesterTest;
+
+import org.testng.annotations.BeforeMethod;
+//import com.maxheapsize.quant.testng.TestAnnotationTesterTest;
 
 public class SetupMethodWithoutTestGroup {
 
@@ -10,7 +12,7 @@ public class SetupMethodWithoutTestGroup {
 
   }
 
-  @Test(groups = TestAnnotationTesterTest.TESTGROUP_UNITTEST)
+  //@Test(groups = TestAnnotationTesterTest.TESTGROUP_UNITTEST)
   public void testMe() {
 
   }

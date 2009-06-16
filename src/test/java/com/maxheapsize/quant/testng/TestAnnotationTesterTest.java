@@ -92,4 +92,10 @@ public class TestAnnotationTesterTest {
     unitUnderTest = TestNGClassTester.createBuilder(SetupMethodWithoutTestGroup.class).addTestGroup(TESTGROUP_UNITTEST).build();
     assertTrue(unitUnderTest.isInvalidTestClass());
   }
+
+  @Test
+  public void testNonAtTestAnnotationWithGroup() {
+    unitUnderTest = TestNGClassTester.createBuilder(NonAtTestAnnotationWithGroup.class).addTestGroup(TESTGROUP_UNITTEST).build();
+    assertFalse(unitUnderTest.isInvalidTestClass());
+  }
 }

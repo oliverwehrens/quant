@@ -1,7 +1,6 @@
 package com.maxheapsize.quant.testng;
 
 import com.maxheapsize.quant.ClassTester;
-import org.testng.annotations.Test;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
@@ -154,12 +153,12 @@ public class TestNGClassTester extends TestNGBase implements ClassTester {
   }
 
   private boolean checkForTestAnnotationWithValidTestGroupOnClass() {
-    if (klass.isAnnotationPresent(Test.class)) {
-      Annotation[] annotations = klass.getAnnotations();
-      for (Annotation annotation : annotations) {
-        if (checkTestAnnotationForTestGroups(annotation)) {
-          return true;
-        }
+
+    Annotation[] annotations = klass.getAnnotations();
+    for (Annotation annotation : annotations) {
+
+      if (checkTestAnnotationForTestGroups(annotation)) {
+        return true;
       }
     }
     return false;
@@ -209,7 +208,13 @@ public class TestNGClassTester extends TestNGBase implements ClassTester {
   }
 
   private boolean hasTestAnnotation(Method method) {
-    return method.isAnnotationPresent(Test.class);
+    Annotation[] annotations = method.getAnnotations();
+    for (Annotation annotation : annotations) {
+      if (isTestAnnotation(annotation)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private boolean methodConfirmsToSpecification(Method method) {
@@ -241,10 +246,32 @@ public class TestNGClassTester extends TestNGBase implements ClassTester {
   private String[] getTestGroupsFromAnnotation(Annotation annotation) {
 
     String[] testAnnotationGroups = {};
-    if (annotation.annotationType().equals(Test.class)) {
-      testAnnotationGroups = ((Test) annotation).groups();
+    for (Class testNGAnnotationClass : annotations.keySet()) {
+      if (annotation.annotationType().equals(testNGAnnotationClass)) {
+        testAnnotationGroups = getTestGroups(annotation, testNGAnnotationClass);
+      }
     }
+    return testAnnotationGroups;
+  }
 
+  private String[] getTestGroups(Annotation annotation, Class annotationTypeKlass) {
+
+    Method groupsMethod = null;
+    String[] testAnnotationGroups = new String[0];
+    try {
+      groupsMethod = annotationTypeKlass.getMethod("groups", null);
+
+      testAnnotationGroups = (String[]) groupsMethod.invoke(annotation);
+    }
+    catch (NoSuchMethodException e) {
+      //
+    }
+    catch (IllegalAccessException e) {
+      //
+    }
+    catch (InvocationTargetException e) {
+      //
+    }
     return testAnnotationGroups;
   }
 }

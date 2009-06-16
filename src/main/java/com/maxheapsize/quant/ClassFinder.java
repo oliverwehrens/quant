@@ -7,9 +7,9 @@ import java.util.*;
 
 public class ClassFinder {
 
-  private final static String SOURCE_FILE_SUFFIX = "java";
-  private final static boolean RECURSIVE_SEARCH = true;
-  private int ZERO_BASED_OFFSET = 1;
+  private static final String SOURCE_FILE_SUFFIX = "java";
+  private static final boolean RECURSIVE_SEARCH = true;
+  private static final int ZERO_BASED_OFFSET = 1;
   private String testSourcePath;
   private List<String> allFullyQualifiedTestNames = new ArrayList<String>();
   private List<String> excludedPackages = new ArrayList<String>();
@@ -18,8 +18,8 @@ public class ClassFinder {
   // Builder
 
   public static class Builder {
-    String testSourcePath;
-    List<String> excludedPackages = new ArrayList<String>();
+    private String testSourcePath;
+    private List<String> excludedPackages = new ArrayList<String>();
 
     /**
      * Contructs a ClassFinder which will try to load all classes under the given testSourcePath.
@@ -117,8 +117,7 @@ public class ClassFinder {
     File testSourceBaseDirectory = new File(testSourcePath);
     String classFileName = absoluteClassNamePath.substring(testSourceBaseDirectory.getAbsolutePath().length() + ZERO_BASED_OFFSET);
     String classNameWithSuffix = classFileName.replace(File.separator, ".");
-    String fqClassName = classNameWithSuffix.substring(0, classNameWithSuffix.length() - SOURCE_FILE_SUFFIX.length() - ZERO_BASED_OFFSET);
-    return fqClassName;
+    return classNameWithSuffix.substring(0, classNameWithSuffix.length() - SOURCE_FILE_SUFFIX.length() - ZERO_BASED_OFFSET);
   }
 
   private Collection getAllJavaSourceFiles(File testSourceDirectory) {
