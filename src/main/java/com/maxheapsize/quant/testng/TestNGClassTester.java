@@ -1,6 +1,6 @@
 package com.maxheapsize.quant.testng;
 
-import com.maxheapsize.quant.ClassTester;
+import com.maxheapsize.quant.*;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
@@ -110,18 +110,27 @@ public class TestNGClassTester extends TestNGBase implements ClassTester {
     return !(allTestMethodsHaveValidTestGroup() || (isAbstractClass() && ignoreAbstractClass));
   }
 
-  public String toString() {
+  public String reportViolation() {
     StringBuffer result = new StringBuffer();
-    result.append("Report for Class ").append(klass.getName());
-    result.append("\n----------------------------\n");
-    result.append(reportMethods("Public void methods", publicVoidMethods));
-    result.append(reportMethods("Non TestAnnotated methods", nonTestAnnotatedPublicVoidMethods));
-    result.append("* Test annotation with TestGroups on Class: ").append(Boolean.valueOf(validTestAnnotationWithTestGroupOnClass)).append("\n");
-    result.append("* Allowed TestGroups : ");
-    for (String validTestGroup : validTestGroups) {
-      result.append(" + " + validTestGroup);
-    }
+    result.append("\nReport for Class ").append(klass.getName());
     result.append("\n");
+    result.append("Ignore abstract classes: " + ignoreAbstractClass);
+    result.append("\n");
+    if (!validTestGroups.isEmpty()) {
+      result.append("Specified TestGroups : ");
+      for (String validTestGroup : validTestGroups) {
+        result.append(" + " + validTestGroup);
+      }
+      result.append("\n");
+    }
+
+    if (!nonTestAnnotatedPublicVoidMethods.isEmpty()) {
+      result.append(reportMethods("Non TestAnnotated methods", nonTestAnnotatedPublicVoidMethods));
+    }
+    if (!methodsWithWrongTestGroup.isEmpty()) {
+      result.append(reportMethods("Methods with wrong test group: ", methodsWithWrongTestGroup));
+    }
+
     return result.toString();
   }
 
@@ -267,13 +276,13 @@ public class TestNGClassTester extends TestNGBase implements ClassTester {
       testAnnotationGroups = (String[]) groupsMethod.invoke(annotation);
     }
     catch (NoSuchMethodException e) {
-      //
+      throw new ClassTesterException("Could not get groups of annotation " + annotation.annotationType().getName());
     }
     catch (IllegalAccessException e) {
-      //
+      throw new ClassTesterException("Could not get groups of annotation " + annotation.annotationType().getName());
     }
     catch (InvocationTargetException e) {
-      //
+      throw new ClassTesterException("Could not get groups of annotation " + annotation.annotationType().getName());
     }
     return testAnnotationGroups;
   }

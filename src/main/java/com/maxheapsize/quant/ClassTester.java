@@ -8,4 +8,11 @@ public interface ClassTester {
    * @return true if the class violates the specification.
    */
   boolean isInvalidTestClass();
+
+  /**
+   * Reports the violations of the specification.
+   *
+   * @return Message containing information about the violations.
+   */
+  String reportViolation();
 }

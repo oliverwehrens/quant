@@ -29,7 +29,7 @@ public class TestAnnotationTesterTest {
   @Test
   public void testWrongTestGroupOnMethod() {
     unitUnderTest = TestNGClassTester.createBuilder(WrongTestGroupOnMethod.class).addTestGroup(TESTGROUP_UNITTEST).build();
-    assertTrue(unitUnderTest.isInvalidTestClass());
+    assertTrue(unitUnderTest.isInvalidTestClass(), unitUnderTest.reportViolation());
   }
 
   @Test
