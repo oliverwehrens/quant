@@ -1,4 +1,3 @@
+TODO
 
-- Rename allTestMethodsHaveValidTestGroups to something like hasNonDeclaredTests
 - exclude/include for Packages and esp. class names
-- 
