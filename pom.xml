@@ -3,7 +3,7 @@
     <groupId>com.maxheapsize</groupId>
     <artifactId>quant</artifactId>
     <packaging>jar</packaging>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.2</version>
     <name>quant</name>
     <description>Quant is a helper to detect files in your source directory which are not declared as test or do have
         disabled tests.
@@ -42,9 +42,9 @@
     </dependencies>
 
     <scm>
-        <connection>scm:svn:http://quant.googlecode.com/svn/trunk/</connection>
-        <developerConnection>scm:svn:https://quant.googlecode.com/svn/trunk/</developerConnection>
-        <url>http://code.google.com/p/quant/source/browse/</url>
+        <connection>scm:svn:http://quant.googlecode.com/svn/tags/quant-0.2</connection>
+        <developerConnection>scm:svn:https://quant.googlecode.com/svn/tags/quant-0.2</developerConnection>
+        <url>http://code.google.com/p/quant/source/browse/tags/quant-0.2</url>
     </scm>
 
     <issueManagement>
