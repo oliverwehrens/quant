@@ -56,7 +56,7 @@ public class TestAnnotationTesterTest {
     assertTrue(unitUnderTest.isInvalidTestClass());
   }
 
-  @Test(timeOut = 1000)
+  @Test(timeOut = 2000)
   public void testPerformance() {
     for (int i = 0; i < 10000; i++) {
       ClassTester performance = TestNGClassTester.createBuilder(OneMethodWithTestGroupSecondWithout.class).addTestGroup(TESTGROUP_UNITTEST).build();
@@ -72,7 +72,7 @@ public class TestAnnotationTesterTest {
   @Test
   public void testDoNotIgnoreAbstractClass() {
     unitUnderTest = TestNGClassTester.createBuilder(AbstractTestClass.class).doNotIgnoreAbstractClass().build();
-    assertTrue(unitUnderTest.isInvalidTestClass());
+    assertTrue(unitUnderTest.isInvalidTestClass(), unitUnderTest.reportViolation());
   }
 
   @Test
@@ -90,7 +90,7 @@ public class TestAnnotationTesterTest {
   @Test
   public void testFindSetupMethodWithoutGroup() {
     unitUnderTest = TestNGClassTester.createBuilder(SetupMethodWithoutTestGroup.class).addTestGroup(TESTGROUP_UNITTEST).build();
-    assertTrue(unitUnderTest.isInvalidTestClass());
+    assertTrue(unitUnderTest.isInvalidTestClass(), unitUnderTest.reportViolation());
   }
 
   @Test

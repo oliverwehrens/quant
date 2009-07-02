@@ -8,11 +8,11 @@ import java.util.*;
 
 public abstract class TestNGBase {
 
-  protected List<Method> publicVoidMethods = new ArrayList<Method>();
+  private List<Method> publicVoidMethods = new ArrayList<Method>();
 
-  protected Map<Class, String> annotations = new HashMap<Class, String>();
+  private Map<Class, String> annotations = new HashMap<Class, String>();
 
-  boolean isTestAnnotation(Annotation annotation) {
+  final boolean isTestAnnotation(Annotation annotation) {
     Class annotationType = annotation.annotationType();
     return annotations.containsKey(annotationType);
   }
@@ -38,7 +38,7 @@ public abstract class TestNGBase {
     annotations.put(testAnnotation, testAnnotation.getName());
   }
 
-  protected List<Method> getPublicVoidMethods(Class klass) {
+  protected final List<Method> getPublicVoidMethods(Class klass) {
     List<Method> result = new ArrayList<Method>();
 
     Method[] methods = klass.getDeclaredMethods();
@@ -52,5 +52,21 @@ public abstract class TestNGBase {
 
   private boolean isPublicVoidMethod(Method method) {
     return Modifier.isPublic(method.getModifiers()) && method.getReturnType().equals(Void.TYPE);
+  }
+
+  public List<Method> getPublicVoidMethods() {
+    return publicVoidMethods;
+  }
+
+  public void setPublicVoidMethods(List<Method> publicVoidMethods) {
+    this.publicVoidMethods = publicVoidMethods;
+  }
+
+  public Map<Class, String> getAnnotations() {
+    return annotations;
+  }
+
+  public void setAnnotations(Map<Class, String> annotations) {
+    this.annotations = annotations;
   }
 }

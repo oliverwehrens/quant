@@ -10,12 +10,12 @@ public interface DisabledTestFinder {
    *
    * @return true if the class has disabled test methods.
    */
-  public boolean hasDisabledTests();
+  boolean hasDisabledTests();
 
   /**
    * Returns a list with the disabled test methods.
    *
    * @return List with the disabled test methods.
    */
-  public List<Method> getDisabledTests();
+  List<Method> getDisabledTests();
 }

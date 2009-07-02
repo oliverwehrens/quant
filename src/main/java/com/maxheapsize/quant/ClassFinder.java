@@ -5,7 +5,7 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.util.*;
 
-public class ClassFinder {
+public final class ClassFinder {
 
   private static final String SOURCE_FILE_SUFFIX = "java";
   private static final boolean RECURSIVE_SEARCH = true;
@@ -39,7 +39,7 @@ public class ClassFinder {
      *
      * @return Builder
      */
-    public Builder addExcludedPackage(String packageName) {
+    public final Builder addExcludedPackage(String packageName) {
       excludedPackages.add(packageName);
       return this;
     }
@@ -49,7 +49,7 @@ public class ClassFinder {
      *
      * @return ClassFinder
      */
-    public ClassFinder build() {
+    public final ClassFinder build() {
       return new ClassFinder(testSourcePath, excludedPackages);
     }
   }
@@ -84,7 +84,7 @@ public class ClassFinder {
         classList.add(klass);
       }
       catch (ClassNotFoundException e) {
-        System.out.println("Could not load: " + qualifiedTestName);
+        throw new ClassTesterException("Could not find class " + qualifiedTestName);
       }
     }
   }

@@ -46,7 +46,7 @@ public class TestNGDisabledTestFinder extends TestNGBase implements DisabledTest
   }
 
   private void searchForDisabledTests() {
-    for (Method method : publicVoidMethods) {
+    for (Method method : getPublicVoidMethods()) {
       Annotation[] annotations = method.getAnnotations();
       for (Annotation annotation : annotations) {
         if (annotation.annotationType().equals(Test.class)) {

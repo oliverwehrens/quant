@@ -6,7 +6,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.util.*;
 
-public class TestNGClassTester extends TestNGBase implements ClassTester {
+public final class TestNGClassTester extends TestNGBase implements ClassTester {
 
   private boolean validTestAnnotationWithTestGroupOnClass;
 
@@ -42,7 +42,7 @@ public class TestNGClassTester extends TestNGBase implements ClassTester {
      *
      * @return Builder
      */
-    public Builder addTestGroup(String testGroupName) {
+    public final Builder addTestGroup(String testGroupName) {
       validTestGroups.add(testGroupName);
       return this;
     }
@@ -52,7 +52,7 @@ public class TestNGClassTester extends TestNGBase implements ClassTester {
      *
      * @return Builder
      */
-    public Builder useOnlyAnnotatedMethods() {
+    public final Builder useOnlyAnnotatedMethods() {
       useOnlyAnnotatedMethods = true;
       return this;
     }
@@ -62,7 +62,7 @@ public class TestNGClassTester extends TestNGBase implements ClassTester {
      *
      * @return Builder
      */
-    public Builder doNotIgnoreAbstractClass() {
+    public final Builder doNotIgnoreAbstractClass() {
       ignoreAbstractClass = false;
       return this;
     }
@@ -72,7 +72,7 @@ public class TestNGClassTester extends TestNGBase implements ClassTester {
      *
      * @return ClassTester
      */
-    public ClassTester build() {
+    public final ClassTester build() {
       return new TestNGClassTester(this);
     }
   }
@@ -98,8 +98,8 @@ public class TestNGClassTester extends TestNGBase implements ClassTester {
   }
 
   private void examineClass() {
-    publicVoidMethods = getPublicVoidMethods(klass);
-    nonTestAnnotatedPublicVoidMethods = getNonTestAnnotatedPublicVoidMethod(publicVoidMethods);
+    setPublicVoidMethods(getPublicVoidMethods(klass));
+    nonTestAnnotatedPublicVoidMethods = getNonTestAnnotatedPublicVoidMethod(getPublicVoidMethods());
     validTestAnnotationWithTestGroupOnClass = checkForTestAnnotationWithValidTestGroupOnClass();
     methodsWithWrongTestGroup = checkMethodsToConfirmToSpecification();
   }
@@ -114,12 +114,12 @@ public class TestNGClassTester extends TestNGBase implements ClassTester {
     StringBuffer result = new StringBuffer();
     result.append("\nReport for Class ").append(klass.getName());
     result.append("\n");
-    result.append("Ignore abstract classes: " + ignoreAbstractClass);
+    result.append("Ignore abstract classes: ").append(ignoreAbstractClass);
     result.append("\n");
     if (!validTestGroups.isEmpty()) {
       result.append("Specified TestGroups : ");
       for (String validTestGroup : validTestGroups) {
-        result.append(" + " + validTestGroup);
+        result.append(" + ").append(validTestGroup);
       }
       result.append("\n");
     }
@@ -153,7 +153,7 @@ public class TestNGClassTester extends TestNGBase implements ClassTester {
 
   private List<Method> checkMethodsToConfirmToSpecification() {
     List<Method> result = new ArrayList<Method>();
-    for (Method publicVoidMethod : publicVoidMethods) {
+    for (Method publicVoidMethod : getPublicVoidMethods()) {
       if (!methodConfirmsToSpecification(publicVoidMethod)) {
         result.add(publicVoidMethod);
       }
@@ -258,7 +258,7 @@ public class TestNGClassTester extends TestNGBase implements ClassTester {
   private String[] getTestGroupsFromAnnotation(Annotation annotation) {
 
     String[] testAnnotationGroups = {};
-    for (Class testNGAnnotationClass : annotations.keySet()) {
+    for (Class testNGAnnotationClass : getAnnotations().keySet()) {
       if (annotation.annotationType().equals(testNGAnnotationClass)) {
         testAnnotationGroups = getTestGroups(annotation, testNGAnnotationClass);
       }
