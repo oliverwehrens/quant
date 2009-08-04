@@ -1,9 +1,27 @@
 package com.maxheapsize.quant.testng;
 
 import com.maxheapsize.quant.ClassTester;
-import com.maxheapsize.quant.testclasses.*;
-import static org.testng.Assert.*;
+import com.maxheapsize.quant.testclasses.AbstractTestClass;
+import com.maxheapsize.quant.testclasses.AnnotationOnlyOnClassWithTestGroup;
+import com.maxheapsize.quant.testclasses.AnnotationOnlyOnTestClassWithoutTestGroup;
+import com.maxheapsize.quant.testclasses.CheckAllTestNGAnnotationsWithOutGroups;
+import com.maxheapsize.quant.testclasses.NoAnnotation;
+import com.maxheapsize.quant.testclasses.NoGroupOnTestsJustOnClassWithDifferentAnnotations;
+import com.maxheapsize.quant.testclasses.NonAtTestAnnotationWithGroup;
+import com.maxheapsize.quant.testclasses.OneMethodWithTestGroupSecondWithout;
+import com.maxheapsize.quant.testclasses.OnlyOneMethodWithTest;
+import com.maxheapsize.quant.testclasses.SetupMethodWithoutTestGroup;
+import com.maxheapsize.quant.testclasses.TestAnnotationOnlyOnMethod;
+import com.maxheapsize.quant.testclasses.TestMultipleTestGroups;
+import com.maxheapsize.quant.testclasses.TwoTestGroups;
+import com.maxheapsize.quant.testclasses.WrongTestGroupOnClass;
+import com.maxheapsize.quant.testclasses.WrongTestGroupOnMethod;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
 import org.testng.annotations.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Test(groups = "unitTest")
 public class TestAnnotationTesterTest {
@@ -109,5 +127,15 @@ public class TestAnnotationTesterTest {
   public void testAnnotationOnlyOnTestClassWithoutTestGroup() {
     unitUnderTest = TestNGClassTester.createBuilder(AnnotationOnlyOnTestClassWithoutTestGroup.class).addTestGroup(TESTGROUP_UNITTEST).build();
     assertTrue(unitUnderTest.isInvalidTestClass());
+  }
+
+  @Test
+  public void testAddMultipleTestGroupsAsString() {
+    List<String> groupNames = new ArrayList<String>();
+    groupNames.add(TESTGROUP_GROUPONE);
+    groupNames.add(TESTGROUP_GROUPTWO);
+    unitUnderTest = TestNGClassTester.createBuilder(TestMultipleTestGroups.class).setTestGroups(groupNames).build();
+
+    assertTrue(unitUnderTest.isValidTestClass());
   }
 }

@@ -3,7 +3,9 @@ package com.maxheapsize.quant;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public final class ClassFinder {
 
@@ -18,11 +20,12 @@ public final class ClassFinder {
   // Builder
 
   public static class Builder {
+
     private String testSourcePath;
     private List<String> excludedPackages = new ArrayList<String>();
 
     /**
-     * Contructs a ClassFinder which will try to load all classes under the given testSourcePath.
+     * Constructs a ClassFinder which will try to load all classes under the given testSourcePath.
      *
      * @param testSourcePath
      */

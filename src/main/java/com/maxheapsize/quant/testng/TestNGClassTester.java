@@ -1,10 +1,14 @@
 package com.maxheapsize.quant.testng;
 
-import com.maxheapsize.quant.*;
+import com.maxheapsize.quant.ClassTester;
+import com.maxheapsize.quant.ClassTesterException;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.*;
-import java.util.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class TestNGClassTester extends TestNGBase implements ClassTester {
 
@@ -20,6 +24,7 @@ public final class TestNGClassTester extends TestNGBase implements ClassTester {
   // Builder
 
   public static class Builder {
+
     private final Class klass;
     private List<String> validTestGroups = new ArrayList<String>();
     private boolean useOnlyAnnotatedMethods = false;
@@ -68,6 +73,18 @@ public final class TestNGClassTester extends TestNGBase implements ClassTester {
     }
 
     /**
+     * Sets the tests groups which the tests need to be in.
+     *
+     * @param groupNames names of the testgroups
+     *
+     * @return Builder
+     */
+    public final Builder setTestGroups(List<String> groupNames) {
+      validTestGroups = groupNames;
+      return this;
+    }
+
+    /**
      * Build the ClassTester
      *
      * @return ClassTester
@@ -108,6 +125,10 @@ public final class TestNGClassTester extends TestNGBase implements ClassTester {
 
   public boolean isInvalidTestClass() {
     return !(allTestMethodsHaveValidTestGroup() || (isAbstractClass() && ignoreAbstractClass));
+  }
+
+  public boolean isValidTestClass() {
+    return !isInvalidTestClass();
   }
 
   public String reportViolation() {

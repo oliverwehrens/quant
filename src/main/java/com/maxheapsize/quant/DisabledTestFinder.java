@@ -18,4 +18,11 @@ public interface DisabledTestFinder {
    * @return List with the disabled test methods.
    */
   List<Method> getDisabledTests();
+
+  /**
+   * Returns the name of the class which was tested.
+   *
+   * @return Name of the class
+   */
+  String getTestClassName();
 }

@@ -5,14 +5,18 @@ import org.testng.annotations.Test;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TestNGDisabledTestFinder extends TestNGBase implements DisabledTestFinder {
 
   private List<Method> disabledTests = new ArrayList<Method>();
 
+  private String testClassName;
+
   public static class Builder {
-    private static Class klass;
+
+    private Class klass;
 
     public Builder(Class klass) {
       super();
@@ -22,6 +26,10 @@ public class TestNGDisabledTestFinder extends TestNGBase implements DisabledTest
     public DisabledTestFinder build() {
       return new TestNGDisabledTestFinder(this);
     }
+
+    protected String getTestClassName() {
+      return klass.getName();
+    }
   }
 
   public static Builder createBuilder(Class klass) {
@@ -30,6 +38,7 @@ public class TestNGDisabledTestFinder extends TestNGBase implements DisabledTest
 
   private TestNGDisabledTestFinder(Builder builder) {
     super(builder.klass);
+    testClassName = builder.getTestClassName();
     examineClass();
   }
 
@@ -39,6 +48,10 @@ public class TestNGDisabledTestFinder extends TestNGBase implements DisabledTest
 
   public List<Method> getDisabledTests() {
     return disabledTests;
+  }
+
+  public String getTestClassName() {
+    return testClassName;
   }
 
   private void examineClass() {

@@ -1,3 +1,9 @@
+Update 0.3
+
+- You can now add a list of Testgroups via setTestGroup on the ClassTester
+- It is possible now to have the DisabledTestFinder say which class had disabled Tests (and which)
+
+==========
 
 - Assumptions
 
