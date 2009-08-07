@@ -10,7 +10,7 @@ import java.util.List;
 
 public final class TestNGClassTester extends TestNGBase implements ClassTester {
 
-  private boolean validTestAnnotationWithTestGroupOnClass;
+  private boolean testAnnotationWithValidTestGroupOnClass;
 
   private Class klass;
   private List<String> validTestGroups = new ArrayList<String>();
@@ -117,8 +117,8 @@ public final class TestNGClassTester extends TestNGBase implements ClassTester {
   private void examineClass() {
     setPublicVoidMethods(getPublicVoidMethods(klass));
     nonTestAnnotatedPublicVoidMethods = testNGAnnotationInspector.getNonTestAnnotatedPublicVoidMethod(getPublicVoidMethods());
-    validTestAnnotationWithTestGroupOnClass = checkForTestAnnotationWithValidTestGroupOnClass();
-    methodsWithWrongTestGroup = checkMethodsToConfirmToSpecification();
+    testAnnotationWithValidTestGroupOnClass = checkForTestAnnotationWithValidTestGroupOnClass();
+    methodsWithWrongTestGroup = getMethodsNotConfirmingToSpecification();
   }
 
   // Public methods
@@ -163,7 +163,7 @@ public final class TestNGClassTester extends TestNGBase implements ClassTester {
   }
 
   private boolean allTestMethodsHaveValidTestGroup() {
-    if (validTestAnnotationWithTestGroupOnClass) {
+    if (testAnnotationWithValidTestGroupOnClass) {
       return true;
     }
     else if (methodsWithWrongTestGroup.isEmpty()) {
@@ -172,7 +172,7 @@ public final class TestNGClassTester extends TestNGBase implements ClassTester {
     return false;
   }
 
-  private List<Method> checkMethodsToConfirmToSpecification() {
+  private List<Method> getMethodsNotConfirmingToSpecification() {
     List<Method> result = new ArrayList<Method>();
     for (Method publicVoidMethod : getPublicVoidMethods()) {
       if (!methodConfirmsToSpecification(publicVoidMethod)) {
