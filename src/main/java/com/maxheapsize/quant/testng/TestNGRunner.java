@@ -1,12 +1,14 @@
 package com.maxheapsize.quant.testng;
 
-import com.maxheapsize.quant.*;
+import com.maxheapsize.quant.ClassFinder;
+import com.maxheapsize.quant.ClassTester;
 
+import java.io.IOException;
 import java.util.List;
 
 public class TestNGRunner {
 
-  public void run(String sourceDirectory) {
+  public void run(String sourceDirectory) throws IOException {
 
     ClassFinder classFinder = new ClassFinder.Builder(sourceDirectory).build();
     List<Class> classes = classFinder.getClassList();
