@@ -1,10 +1,8 @@
 package com.maxheapsize.quant.testng;
 
 import com.maxheapsize.quant.ClassTester;
-import com.maxheapsize.quant.ClassTesterException;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -20,6 +18,7 @@ public final class TestNGClassTester extends TestNGBase implements ClassTester {
   private List<Method> methodsWithWrongTestGroup = new ArrayList<Method>();
   private boolean useOnlyAnnotatedMethods = false;
   private boolean ignoreAbstractClass = true;
+  private TestNGAnnotationInspector testNGAnnotationInspector;
 
   // Builder
 
@@ -107,6 +106,7 @@ public final class TestNGClassTester extends TestNGBase implements ClassTester {
 
   private TestNGClassTester(Builder builder) {
     super(builder.klass);
+    testNGAnnotationInspector = new TestNGAnnotationInspector();
     this.klass = builder.klass;
     this.validTestGroups = builder.validTestGroups;
     this.useOnlyAnnotatedMethods = builder.useOnlyAnnotatedMethods;
@@ -116,7 +116,7 @@ public final class TestNGClassTester extends TestNGBase implements ClassTester {
 
   private void examineClass() {
     setPublicVoidMethods(getPublicVoidMethods(klass));
-    nonTestAnnotatedPublicVoidMethods = getNonTestAnnotatedPublicVoidMethod(getPublicVoidMethods());
+    nonTestAnnotatedPublicVoidMethods = testNGAnnotationInspector.getNonTestAnnotatedPublicVoidMethod(getPublicVoidMethods());
     validTestAnnotationWithTestGroupOnClass = checkForTestAnnotationWithValidTestGroupOnClass();
     methodsWithWrongTestGroup = checkMethodsToConfirmToSpecification();
   }
@@ -195,8 +195,8 @@ public final class TestNGClassTester extends TestNGBase implements ClassTester {
   }
 
   private boolean checkTestAnnotationForTestGroups(Annotation annotation) {
-    if (isTestAnnotation(annotation)) {
-      String[] testGroupsOnAnnotation = getTestGroupsFromAnnotation(annotation);
+    if (testNGAnnotationInspector.isTestAnnotation(annotation)) {
+      String[] testGroupsOnAnnotation = testNGAnnotationInspector.getTestGroupsFromAnnotation(annotation);
       for (String group : testGroupsOnAnnotation) {
         if (testAnnotationGroupIsInExpectedTestGroup(group) || expectedTestGroupIsEmpty()) {
           return true;
@@ -223,42 +223,18 @@ public final class TestNGClassTester extends TestNGBase implements ClassTester {
     return result.toString();
   }
 
-  private List<Method> getNonTestAnnotatedPublicVoidMethod(Iterable<Method> methodIterable) {
-    List<Method> result = new ArrayList<Method>();
-    for (Method method : methodIterable) {
-      boolean addMethod = true;
-      if (hasTestAnnotation(method)) {
-        addMethod = false;
-      }
-      if (addMethod) {
-        result.add(method);
-      }
-    }
-    return result;
-  }
-
-  private boolean hasTestAnnotation(Method method) {
-    Annotation[] annotations = method.getAnnotations();
-    for (Annotation annotation : annotations) {
-      if (isTestAnnotation(annotation)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   private boolean methodConfirmsToSpecification(Method method) {
     Annotation[] annotations = method.getAnnotations();
     boolean hasTestAnnotations = false;
     for (Annotation annotation : annotations) {
 
-      if (isTestAnnotation(annotation)) {
+      if (testNGAnnotationInspector.isTestAnnotation(annotation)) {
         hasTestAnnotations = true;
         if (expectedTestGroupIsEmpty()) {
           return true;
         }
         else {
-          String[] testAnnotationGroups = getTestGroupsFromAnnotation(annotation);
+          String[] testAnnotationGroups = testNGAnnotationInspector.getTestGroupsFromAnnotation(annotation);
           if (testAnnotationGroups.length == 0) {
             return false;
           }
@@ -274,37 +250,5 @@ public final class TestNGClassTester extends TestNGBase implements ClassTester {
       return true;
     }
     return false;
-  }
-
-  private String[] getTestGroupsFromAnnotation(Annotation annotation) {
-
-    String[] testAnnotationGroups = {};
-    for (Class testNGAnnotationClass : getAnnotations().keySet()) {
-      if (annotation.annotationType().equals(testNGAnnotationClass)) {
-        testAnnotationGroups = getTestGroups(annotation, testNGAnnotationClass);
-      }
-    }
-    return testAnnotationGroups;
-  }
-
-  private String[] getTestGroups(Annotation annotation, Class annotationTypeKlass) {
-
-    Method groupsMethod = null;
-    String[] testAnnotationGroups = new String[0];
-    try {
-      groupsMethod = annotationTypeKlass.getMethod("groups", null);
-
-      testAnnotationGroups = (String[]) groupsMethod.invoke(annotation);
-    }
-    catch (NoSuchMethodException e) {
-      throw new ClassTesterException("Could not get groups of annotation " + annotation.annotationType().getName());
-    }
-    catch (IllegalAccessException e) {
-      throw new ClassTesterException("Could not get groups of annotation " + annotation.annotationType().getName());
-    }
-    catch (InvocationTargetException e) {
-      throw new ClassTesterException("Could not get groups of annotation " + annotation.annotationType().getName());
-    }
-    return testAnnotationGroups;
   }
 }
