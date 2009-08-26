@@ -1,3 +1,5 @@
+Update 0.3.1
+
 Update 0.3
 
 - You can now add a list of Testgroups via setTestGroup on the ClassTester
