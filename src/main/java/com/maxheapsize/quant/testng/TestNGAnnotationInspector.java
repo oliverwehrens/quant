@@ -23,7 +23,7 @@ import java.util.Map;
 
 public class TestNGAnnotationInspector {
 
-  private Map<Class, String> annotations = new HashMap<Class, String>();
+  private Map<Class, String> testNGAnnotations = new HashMap<Class, String>();
 
   public TestNGAnnotationInspector() {
     super();
@@ -42,15 +42,15 @@ public class TestNGAnnotationInspector {
 
   final boolean isTestAnnotation(Annotation annotation) {
     Class annotationType = annotation.annotationType();
-    return annotations.containsKey(annotationType);
+    return testNGAnnotations.containsKey(annotationType);
   }
 
   private void storeTestAnnotation(Class testAnnotation) {
-    annotations.put(testAnnotation, testAnnotation.getName());
+    testNGAnnotations.put(testAnnotation, testAnnotation.getName());
   }
 
   public Map<Class, String> getTestAnnotations() {
-    return annotations;
+    return testNGAnnotations;
   }
 
   public boolean hasTestAnnotation(Method method) {
@@ -90,7 +90,7 @@ public class TestNGAnnotationInspector {
 
   private String[] getTestGroups(Annotation annotation, Class annotationTypeKlass) {
 
-    Method groupsMethod = null;
+    Method groupsMethod;
     String[] testAnnotationGroups;
     try {
       groupsMethod = annotationTypeKlass.getMethod("groups", null);

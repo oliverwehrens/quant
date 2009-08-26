@@ -10,6 +10,6 @@ public class TestNGRunnerTest {
   @Test
   public void testTestNGRunner() throws IOException {
     TestNGRunner testNGRunner = new TestNGRunner();
-    testNGRunner.run("src/test/java");
+    testNGRunner.run("target/test-classes");
   }
 }
