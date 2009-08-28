@@ -36,8 +36,8 @@ public final class ClassFinder {
     }
 
     /**
-     * Classes with the specified packagename will not be loaded. 'notInclude' will exclude all classes with the String
-     * 'notInclude' in the fully qualified classname.
+     * Classes with the specified package name will not be loaded. 'notInclude' will exclude all classes with the String
+     * 'notInclude' in the fully qualified class name.
      *
      * @param packageName
      *
@@ -49,7 +49,7 @@ public final class ClassFinder {
     }
 
     /**
-     * Return a ClassFinder with the given builder specifictions.
+     * Return a ClassFinder with the given builder specifications.
      *
      * @return ClassFinder
      */
@@ -57,6 +57,10 @@ public final class ClassFinder {
       return new ClassFinder(testClassPath, excludedPackages);
     }
   }
+
+ public static Builder createBuilder(String testClassPath) {
+     return new Builder(testClassPath);
+ }
 
   /**
    * Returns the list of classes which are loaded according to the specifications.

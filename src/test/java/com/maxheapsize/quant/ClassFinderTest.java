@@ -13,7 +13,7 @@ public class ClassFinderTest {
 
   @Test
   public void testFindClassesWithExcludedPackages() throws IOException {
-    unitUnderTest = new ClassFinder.Builder("target/test-classes").addExcludedPackage("testclasses").
+    unitUnderTest = ClassFinder.createBuilder("target/test-classes").addExcludedPackage("testclasses").
         addExcludedPackage("learningtests").build();
 
     List<Class> classes = unitUnderTest.getClassList();
@@ -22,7 +22,7 @@ public class ClassFinderTest {
 
   @Test
   public void testExcludeAllPackages() throws IOException {
-    unitUnderTest = new ClassFinder.Builder("target/test-classes").addExcludedPackage("com.maxheapsize").build();
+    unitUnderTest = ClassFinder.createBuilder("target/test-classes").addExcludedPackage("com.maxheapsize").build();
 
     List<Class> classes = unitUnderTest.getClassList();
     Assert.assertSame(classes.size(), 0);

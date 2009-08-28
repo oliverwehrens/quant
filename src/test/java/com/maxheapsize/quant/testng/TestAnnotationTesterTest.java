@@ -1,21 +1,7 @@
 package com.maxheapsize.quant.testng;
 
 import com.maxheapsize.quant.ClassTester;
-import com.maxheapsize.quant.testclasses.AbstractTestClass;
-import com.maxheapsize.quant.testclasses.AnnotationOnlyOnClassWithTestGroup;
-import com.maxheapsize.quant.testclasses.AnnotationOnlyOnTestClassWithoutTestGroup;
-import com.maxheapsize.quant.testclasses.CheckAllTestNGAnnotationsWithOutGroups;
-import com.maxheapsize.quant.testclasses.NoAnnotation;
-import com.maxheapsize.quant.testclasses.NoGroupOnTestsJustOnClassWithDifferentAnnotations;
-import com.maxheapsize.quant.testclasses.NonAtTestAnnotationWithGroup;
-import com.maxheapsize.quant.testclasses.OneMethodWithTestGroupSecondWithout;
-import com.maxheapsize.quant.testclasses.OnlyOneMethodWithTest;
-import com.maxheapsize.quant.testclasses.SetupMethodWithoutTestGroup;
-import com.maxheapsize.quant.testclasses.TestAnnotationOnlyOnMethod;
-import com.maxheapsize.quant.testclasses.TestMultipleTestGroups;
-import com.maxheapsize.quant.testclasses.TwoTestGroups;
-import com.maxheapsize.quant.testclasses.WrongTestGroupOnClass;
-import com.maxheapsize.quant.testclasses.WrongTestGroupOnMethod;
+import com.maxheapsize.quant.testclasses.*;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 import org.testng.annotations.Test;
@@ -74,7 +60,7 @@ public class TestAnnotationTesterTest {
     assertTrue(unitUnderTest.isInvalidTestClass());
   }
 
-  @Test(timeOut = 2000)
+  @Test(timeOut = 3000)
   public void testPerformance() {
     for (int i = 0; i < 10000; i++) {
       ClassTester performance = TestNGClassTester.createBuilder(OneMethodWithTestGroupSecondWithout.class).addTestGroup(TESTGROUP_UNITTEST).build();

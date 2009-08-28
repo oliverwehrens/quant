@@ -1,6 +1,6 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
-<suite name="TestSuite" verbose="1">
+<suite name="TestSuite" verbose="1" parallel="2" thread-count="2">
   <test name="unitTests">
     <groups>
       <run>
