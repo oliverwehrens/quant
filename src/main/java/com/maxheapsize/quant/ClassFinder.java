@@ -1,6 +1,7 @@
 package com.maxheapsize.quant;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,6 +18,8 @@ public final class ClassFinder {
   private List<String> allFullyQualifiedTestNames = new ArrayList<String>();
   private List<String> excludedPackages = new ArrayList<String>();
   private List<Class> classList = new ArrayList<Class>();
+  private static Logger log = Logger.getLogger(ClassFinder.class);
+
 
   // Builder
 
@@ -87,6 +90,7 @@ public final class ClassFinder {
   private void findWantedTestClassed() throws IOException {
     CustomClassLoader customClassLoader = new CustomClassLoader(testClassPath);
     for (String qualifiedTestName : allFullyQualifiedTestNames) {
+      log.debug("Trying to load Class "+qualifiedTestName);
       Class klass = customClassLoader.findClass(qualifiedTestName);
       classList.add(klass);
     }
