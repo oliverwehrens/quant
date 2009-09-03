@@ -20,7 +20,6 @@ public final class ClassFinder {
   private List<Class> classList = new ArrayList<Class>();
   private static Logger log = Logger.getLogger(ClassFinder.class);
 
-
   // Builder
 
   public static class Builder {
@@ -31,7 +30,7 @@ public final class ClassFinder {
     /**
      * Constructs a ClassFinder which will try to load all classes under the given testSourcePath.
      *
-     * @param testClassPath
+     * @param testClassPath classPath
      */
     public Builder(String testClassPath) {
       super();
@@ -42,7 +41,7 @@ public final class ClassFinder {
      * Classes with the specified package name will not be loaded. 'notInclude' will exclude all classes with the String
      * 'notInclude' in the fully qualified class name.
      *
-     * @param packageName
+     * @param packageName packageName to be excluded
      *
      * @return Builder
      */
@@ -55,15 +54,17 @@ public final class ClassFinder {
      * Return a ClassFinder with the given builder specifications.
      *
      * @return ClassFinder
+     *
+     * @throws IOException throws Exception if one of the classes can't be found
      */
     public final ClassFinder build() throws IOException {
       return new ClassFinder(testClassPath, excludedPackages);
     }
   }
 
- public static Builder createBuilder(String testClassPath) {
-     return new Builder(testClassPath);
- }
+  public static Builder createBuilder(String testClassPath) {
+    return new Builder(testClassPath);
+  }
 
   /**
    * Returns the list of classes which are loaded according to the specifications.
@@ -90,21 +91,24 @@ public final class ClassFinder {
   private void findWantedTestClassed() throws IOException {
     CustomClassLoader customClassLoader = new CustomClassLoader(testClassPath);
     for (String qualifiedTestName : allFullyQualifiedTestNames) {
-      log.debug("Trying to load Class "+qualifiedTestName);
+      log.debug("Trying to load Class " + qualifiedTestName);
       Class klass = customClassLoader.findClass(qualifiedTestName);
       classList.add(klass);
     }
   }
 
   private void findFullyQualifiedTestClassNames() {
-    File testSourceDirectory = new File(testClassPath);
-    if (testSourceDirectory.isDirectory()) {
-      Collection sourceFiles = getAllJavaSourceFiles(testSourceDirectory);
-      for (Object sourceFile : sourceFiles) {
-        File file = (File) sourceFile;
+    File testDirectory = new File(testClassPath);
+    log.debug("TestDirectory " + testDirectory.getAbsolutePath());
+    if (testDirectory.isDirectory()) {
+      Collection javaClassFiles = getAllJavaClassFiles(testDirectory);
+      for (Object classFile : javaClassFiles) {
+        File file = (File) classFile;
+        log.debug("Examining class in " + file.getAbsolutePath());
         String classNameFromPath = createClassNameFromPath(testClassPath, file.getAbsolutePath());
         if (!isInExcludedPackage(classNameFromPath)) {
           allFullyQualifiedTestNames.add(classNameFromPath);
+          log.debug("Found TestClass " + classNameFromPath);
         }
       }
     }
@@ -127,7 +131,7 @@ public final class ClassFinder {
     return classNameWithSuffix.substring(0, classNameWithSuffix.length() - FILE_SUFFIX.length() - ZERO_BASED_OFFSET);
   }
 
-  private Collection getAllJavaSourceFiles(File testClassDirectory) {
+  private Collection getAllJavaClassFiles(File testClassDirectory) {
     return FileUtils.listFiles(testClassDirectory, new String[] {FILE_SUFFIX}, RECURSIVE_SEARCH);
   }
 }

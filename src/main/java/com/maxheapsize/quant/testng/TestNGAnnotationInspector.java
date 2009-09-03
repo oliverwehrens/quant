@@ -98,13 +98,13 @@ public class TestNGAnnotationInspector {
       testAnnotationGroups = (String[]) groupsMethod.invoke(annotation);
     }
     catch (NoSuchMethodException e) {
-      throw new ClassTesterException("Could not get groups of annotation " + annotation.annotationType().getName());
+      throw new ClassTesterException("Could not get groups of annotation " + annotation.annotationType().getName() + " " + e);
     }
     catch (IllegalAccessException e) {
-      throw new ClassTesterException("Could not get groups of annotation " + annotation.annotationType().getName());
+      throw new ClassTesterException("Could not get groups of annotation " + annotation.annotationType().getName() + " " + e);
     }
     catch (InvocationTargetException e) {
-      throw new ClassTesterException("Could not get groups of annotation " + annotation.annotationType().getName());
+      throw new ClassTesterException("Could not get groups of annotation " + annotation.annotationType().getName() + " " + e);
     }
     return testAnnotationGroups;
   }

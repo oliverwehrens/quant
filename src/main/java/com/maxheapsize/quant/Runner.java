@@ -1,11 +1,18 @@
 package com.maxheapsize.quant;
 
 import com.maxheapsize.quant.testng.TestNGClassTester;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.util.List;
 
 public class Runner {
+
+  private static Logger log = Logger.getLogger(Runner.class);
+
+  private Runner() {
+    super();
+  }
 
   public static void main(String[] args) throws ClassNotFoundException, IOException {
 
@@ -18,7 +25,7 @@ public class Runner {
     for (Class aClass : classList) {
 
       ClassTester classTester = TestNGClassTester.createBuilder(aClass).addTestGroup("unitTest").build();
-      System.out.println(aClass.getName() + " is a " + classTester.isValidTestClass() + " test class");
+      log.info(aClass.getName() + " is a " + classTester.isValidTestClass() + " test class");
     }
   }
 }

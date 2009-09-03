@@ -6,20 +6,20 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CustomClassLoader extends ClassLoader {
 
   private String testClassPath;
-  private Hashtable classes = new Hashtable();
+  private Map classes = new HashMap();
   private static Logger log = Logger.getLogger(CustomClassLoader.class);
-
 
   public CustomClassLoader(String testClassPath) {
     super(CustomClassLoader.class.getClassLoader());
     this.testClassPath = testClassPath + File.separator;
-    File f = new File(this.testClassPath);
-    log.debug("Custom ClassPath "+f.getAbsolutePath());
+    File file = new File(this.testClassPath);
+    log.debug("Custom ClassPath " + file.getAbsolutePath());
   }
 
   public Class loadClass(String className) throws ClassNotFoundException {
@@ -40,9 +40,10 @@ public class CustomClassLoader extends ClassLoader {
       // did not find the class          
     }
     try {
+      log.debug("try to load class: " + className);
       String classPath = testClassPath + className;
       String clazz = classPath.replace('.', '/') + ".class";
-      log.debug("Clazz "+clazz);
+      log.debug("Clazz " + clazz);
       classByte = loadClassData(clazz);
       result = defineClass(className, classByte, 0, classByte.length, null);
       classes.put(className, result);
@@ -56,7 +57,7 @@ public class CustomClassLoader extends ClassLoader {
   private byte[] loadClassData(String className) throws IOException {
     File file;
     file = new File(className);
-    log.debug("Trying to load "+className);
+    log.debug("Trying to load class from file:  " + className);
     int size = (int) file.length();
     byte buffer[] = new byte[size];
     DataInputStream dataInputStream = null;

@@ -1,6 +1,7 @@
 package com.maxheapsize.quant.testng;
 
 import com.maxheapsize.quant.DisabledTestFinder;
+import org.apache.log4j.Logger;
 import org.testng.annotations.Test;
 
 import java.lang.annotation.Annotation;
@@ -8,10 +9,10 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TestNGDisabledTestFinder extends TestNGBase implements DisabledTestFinder {
+public final class TestNGDisabledTestFinder extends TestNGBase implements DisabledTestFinder {
 
   private List<Method> disabledTests = new ArrayList<Method>();
-
+  private static Logger log = Logger.getLogger(TestNGDisabledTestFinder.class);
   private String testClassName;
 
   public static class Builder {
@@ -39,6 +40,7 @@ public class TestNGDisabledTestFinder extends TestNGBase implements DisabledTest
   private TestNGDisabledTestFinder(Builder builder) {
     super(builder.klass);
     testClassName = builder.getTestClassName();
+    log.debug("Examining class " + testClassName);
     examineClass();
   }
 
@@ -60,12 +62,15 @@ public class TestNGDisabledTestFinder extends TestNGBase implements DisabledTest
 
   private void searchForDisabledTests() {
     for (Method method : getPublicVoidMethods()) {
+      log.debug("Examining " + method.getName());
       Annotation[] annotations = method.getAnnotations();
       for (Annotation annotation : annotations) {
         if (annotation.annotationType().equals(Test.class)) {
+          log.debug("Method has Test Annotation");
           Test testAnnotation = (Test) annotation;
           if (!testAnnotation.enabled()) {
             disabledTests.add(method);
+            log.debug("Test method " + method.getName() + " is disabled.");
           }
         }
       }

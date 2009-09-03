@@ -27,4 +27,18 @@ public class ClassFinderTest {
     List<Class> classes = unitUnderTest.getClassList();
     Assert.assertSame(classes.size(), 0);
   }
+
+  @Test
+  public void testClassInTestList() throws IOException {
+    unitUnderTest = ClassFinder.createBuilder("target/test-classes").build();
+    List<Class> classes = unitUnderTest.getClassList();
+    boolean foundThisTestFinderClass = false;
+    for (Class aClass : classes) {
+      if (aClass.getName().equals(this.getClass().getName())) {
+        foundThisTestFinderClass = true;
+      }
+    }
+
+    Assert.assertTrue(foundThisTestFinderClass);
+  }
 }
