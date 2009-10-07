@@ -12,7 +12,6 @@ public class TestNGRunner {
   private static Logger log = Logger.getLogger(TestNGRunner.class);
 
   public void run(String sourceDirectory) throws IOException {
-
     ClassFinder classFinder = new ClassFinder.Builder(sourceDirectory).build();
     List<Class> classes = classFinder.getClassList();
     for (Class klass : classes) {

@@ -1,13 +1,29 @@
 package com.maxheapsize.quant.testng;
 
 import com.maxheapsize.quant.ClassTester;
-import com.maxheapsize.quant.testclasses.*;
+import com.maxheapsize.quant.testclasses.AbstractTestClass;
+import com.maxheapsize.quant.testclasses.AnnotationOnlyOnClassWithTestGroup;
+import com.maxheapsize.quant.testclasses.AnnotationOnlyOnTestClassWithoutTestGroup;
+import com.maxheapsize.quant.testclasses.CheckAllTestNGAnnotationsWithOutGroups;
+import com.maxheapsize.quant.testclasses.NoAnnotation;
+import com.maxheapsize.quant.testclasses.NoGroupOnTestsJustOnClassWithDifferentAnnotations;
+import com.maxheapsize.quant.testclasses.NonAtTestAnnotationWithGroup;
+import com.maxheapsize.quant.testclasses.OneMethodWithTestGroupSecondWithout;
+import com.maxheapsize.quant.testclasses.OnlyOneMethodWithTest;
+import com.maxheapsize.quant.testclasses.SetupMethodWithoutTestGroup;
+import com.maxheapsize.quant.testclasses.TestAnnotationOnlyOnMethod;
+import com.maxheapsize.quant.testclasses.TestMultipleTestGroups;
+import com.maxheapsize.quant.testclasses.TwoTestGroups;
+import com.maxheapsize.quant.testclasses.WrongTestGroupOnClass;
+import com.maxheapsize.quant.testclasses.WrongTestGroupOnMethod;
+import com.maxheapsize.quant.testgroups.TestGroupTest;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Test(groups = "unitTest")
 public class TestAnnotationTesterTest {
@@ -123,5 +139,14 @@ public class TestAnnotationTesterTest {
     unitUnderTest = TestNGClassTester.createBuilder(TestMultipleTestGroups.class).setTestGroups(groupNames).build();
 
     assertTrue(unitUnderTest.isValidTestClass());
+  }
+
+  @Test
+  public void testTestGroupCount() {
+    unitUnderTest = TestNGClassTester.createBuilder(TestGroupTest.class).build();
+    Map<String, Integer> testGroups = unitUnderTest.getTestGroupCount();
+
+    assertTrue(testGroups.get("TestGroupTwo") == 3);
+    assertTrue(testGroups.size() == 2);
   }
 }

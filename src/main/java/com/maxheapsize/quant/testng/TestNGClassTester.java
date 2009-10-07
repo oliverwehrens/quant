@@ -6,7 +6,9 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public final class TestNGClassTester extends TestNGBase implements ClassTester {
 
@@ -19,6 +21,7 @@ public final class TestNGClassTester extends TestNGBase implements ClassTester {
   private boolean useOnlyAnnotatedMethods = false;
   private boolean ignoreAbstractClass = true;
   private TestNGAnnotationInspector testNGAnnotationInspector;
+  private Map<String, Integer> testGroups = new HashMap<String, Integer>();
 
   // Builder
 
@@ -119,6 +122,30 @@ public final class TestNGClassTester extends TestNGBase implements ClassTester {
     nonTestAnnotatedPublicVoidMethods = testNGAnnotationInspector.getNonTestAnnotatedPublicVoidMethod(getPublicVoidMethods());
     testAnnotationWithValidTestGroupOnClass = checkForTestAnnotationWithValidTestGroupOnClass();
     methodsWithWrongTestGroup = getMethodsNotConfirmingToSpecification();
+    testGroups = getTestGroups();
+  }
+
+  private Map<String, Integer> getTestGroups() {
+    Map<String, Integer> result = new HashMap<String, Integer>();
+
+    for (Method method : getPublicVoidMethods()) {
+      Annotation[] annotations = method.getAnnotations();
+      for (Annotation annotation : annotations) {
+        if (testNGAnnotationInspector.isTestAnnotation(annotation)) {
+          String[] testAnnotationGroups = testNGAnnotationInspector.getTestGroupsFromAnnotation(annotation);
+          for (String testAnnotationGroup : testAnnotationGroups) {
+            if (result.containsKey(testAnnotationGroup)) {
+              result.put(testAnnotationGroup, result.get(testAnnotationGroup) + 1);
+            }
+            else {
+              result.put(testAnnotationGroup, 1);
+            }
+          }
+        }
+      }
+    }
+
+    return result;
   }
 
   // Public methods
@@ -129,6 +156,10 @@ public final class TestNGClassTester extends TestNGBase implements ClassTester {
 
   public boolean isValidTestClass() {
     return !isInvalidTestClass();
+  }
+
+  public Map<String, Integer> getTestGroupCount() {
+    return testGroups;
   }
 
   public String reportViolation() {
@@ -246,9 +277,6 @@ public final class TestNGClassTester extends TestNGBase implements ClassTester {
         }
       }
     }
-    if (!hasTestAnnotations && useOnlyAnnotatedMethods) {
-      return true;
-    }
-    return false;
+    return !hasTestAnnotations && useOnlyAnnotatedMethods;
   }
 }

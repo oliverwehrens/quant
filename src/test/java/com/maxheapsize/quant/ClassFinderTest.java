@@ -13,11 +13,13 @@ public class ClassFinderTest {
 
   @Test
   public void testFindClassesWithExcludedPackages() throws IOException {
-    unitUnderTest = ClassFinder.createBuilder("target/test-classes").addExcludedPackage("testclasses").
+    unitUnderTest = ClassFinder.createBuilder("target/test-classes").
+        addExcludedPackage("testclasses").
+        addExcludedPackage("testgroups").
         addExcludedPackage("learningtests").build();
 
     List<Class> classes = unitUnderTest.getClassList();
-    Assert.assertSame(classes.size(), 4);
+    Assert.assertSame(classes.size(), 5);
   }
 
   @Test
