@@ -1,3 +1,7 @@
+Update 0.4
+
+- Many tests are now run as concordion (http://concordion.org) tests
+
 Update 0.3.1
 
 Update 0.3
