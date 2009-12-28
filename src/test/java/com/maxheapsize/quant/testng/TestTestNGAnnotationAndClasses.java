@@ -4,7 +4,6 @@ import com.maxheapsize.quant.ClassTester;
 import com.maxheapsize.quant.infrastructure.AbstractConcordionTestNgTest;
 import org.testng.annotations.Test;
 
-@Test(groups = "concordion")
 public class TestTestNGAnnotationAndClasses extends AbstractConcordionTestNgTest {
 
   private ClassTester unitUnderTest;
