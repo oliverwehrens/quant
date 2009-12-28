@@ -6,9 +6,9 @@ import org.testng.annotations.Test;
 
 public class TestTestNGAnnotationAndClasses extends AbstractConcordionTestNgTest {
 
-  private ClassTester unitUnderTest;
-
   public String getResult(String testClass, String testGroup) throws ClassNotFoundException {
+    ClassTester unitUnderTest;
+
     Class<?> clazz = Class.forName("com.maxheapsize.quant.testclasses." + testClass);
     if (testGroup.equals("")) {
       unitUnderTest = TestNGClassTester.createBuilder(clazz).build();
