@@ -19,7 +19,7 @@ public class ClassFinderTest {
         addExcludedPackage("learningtests").build();
 
     List<Class> classes = unitUnderTest.getClassList();
-    Assert.assertSame(classes.size(), 5);
+    Assert.assertSame(classes.size(), 7);
   }
 
   @Test

@@ -46,6 +46,19 @@
       <version>1.2.14</version>
     </dependency>
 
+    <dependency>
+      <groupId>org.concordion</groupId>
+      <artifactId>concordion</artifactId>
+      <version>1.3.1</version>
+      <exclusions>
+        <exclusion>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+
   </dependencies>
 
   <scm>
@@ -74,7 +87,14 @@
       </resource>
     </resources>
 
+    <testResources>
+      <testResource>
+        <directory>src/test/concordion</directory>
+      </testResource>
+    </testResources>
+
     <plugins>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
@@ -84,8 +104,16 @@
           <suiteXmlFiles>
             <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
           </suiteXmlFiles>
+          <systemProperties>
+            <property>
+              <name>concordion.output.dir</name>
+              <value>target/concordion-reports</value>
+            </property>
+          </systemProperties>
+
         </configuration>
       </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -107,7 +135,6 @@
               <packageName>com.maxheapsize.quant</packageName>
               <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
               <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-
             </manifest>
             <manifestEntries>
               <url>${pom.url}</url>
@@ -126,7 +153,6 @@
               <classpathPrefix>lib/</classpathPrefix>
             </manifest>
           </archive>
-
           <descriptorRefs>
             <descriptorRef>jar-with-dependencies</descriptorRef>
           </descriptorRefs>

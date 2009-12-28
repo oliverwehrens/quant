@@ -5,6 +5,7 @@
     <groups>
       <run>
         <include name="unitTest"/>
+        <include name="concordion"/>
         <include name="learningTest"/>
       </run>
     </groups>

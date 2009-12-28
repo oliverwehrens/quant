@@ -1,0 +1,107 @@
+<html xmlns:concordion="http://www.concordion.org/2007/concordion"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.concordion.org/2007/concordion ">
+
+<head>
+  <link href="../concordion.css" rel="stylesheet" type="text/css"/>
+</head>
+
+
+<body>
+
+<table concordion:execute="#result = getResult(#testClass, #testGroup)">
+  <tr>
+    <th>Description</th>
+    <th concordion:set="#testClass">testClass</th>
+    <th concordion:set="#testGroup">testGroup</th>
+    <th concordion:assertEquals="#result">result</th>
+  </tr>
+
+  <tr>
+    <td>Only the Class has a test annotation with a valid group.</td>
+    <td>AnnotationOnlyOnClassWithTestGroup</td>
+    <td>testUnitTest</td>
+    <td>valid</td>
+  </tr>
+
+  <tr>
+    <td>The class has no annotations (e.g. no test class).</td>
+    <td>NoAnnotation</td>
+    <td></td>
+    <td>invalid</td>
+  </tr>
+
+  <tr>
+    <td>The only test method has a wrong test group.</td>
+    <td>WrongTestGroupOnMethod</td>
+    <td>testUnitTest</td>
+    <td>invalid</td>
+  </tr>
+
+  <tr>
+    <td>The class has a wrong test group.</td>
+    <td>WrongTestGroupOnClass</td>
+    <td>testUnitTest</td>
+    <td>invalid</td>
+  </tr>
+
+  <tr>
+    <td>The only test method has the correct annotation.</td>
+    <td>TestAnnotationOnlyOnMethod</td>
+    <td>testUnitTest</td>
+    <td>valid</td>
+  </tr>
+
+  <tr>
+    <td>One of two test methods has no @Test annotation.</td>
+    <td>OneMethodWithTestGroupSecondWithout</td>
+    <td>testUnitTest</td>
+    <td>invalid</td>
+  </tr>
+
+  <tr>
+    <td>The setup method has not group.</td>
+    <td>SetupMethodWithoutTestGroup</td>
+    <td>testUnitTest</td>
+    <td>invalid</td>
+  </tr>
+
+  <tr>
+    <td>No group defined, only @Test annotation.</td>
+    <td>AnnotationOnlyOnTestClassWithoutTestGroup</td>
+    <td>testUnitTest</td>
+    <td>invalid</td>
+  </tr>
+
+  <tr>
+    <td>Abstract class without any annotation.</td>
+    <td>AbstractTestClass</td>
+    <td>testUnitTest</td>
+    <td>valid</td>
+  </tr>
+
+  <tr>
+    <td>A non @Test annotation has a test group.</td>
+    <td>NonAtTestAnnotationWithGroup</td>
+    <td>testUnitTest</td>
+    <td>valid</td>
+  </tr>
+
+  <tr>
+    <td>All methods have testng annotations but no group. The class has a @Test group.</td>
+    <td>NoGroupOnTestsJustOnClassWithDifferentAnnotations</td>
+    <td>testUnitTest</td>
+    <td>valid</td>
+  </tr>
+
+  <tr>
+    <td>All TestNG annotations are ok.</td>
+    <td>CheckAllTestNGAnnotationsWithOutGroups</td>
+    <td></td>
+    <td>valid</td>
+  </tr>
+
+</table>
+
+</body>
+</html>
