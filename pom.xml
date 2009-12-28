@@ -62,9 +62,9 @@
   </dependencies>
 
   <scm>
-    <connection>scm:git:git://github.com/oliverwehrens/quant.git</connection>
-    <developerConnection>git@github.com:oliverwehrens/quant.git</developerConnection>
-    <url>scm:git:git://github.com/oliverwehrens/quant.git</url>
+    <connection>scm:git:git@github.com:oliverwehrens/quant.git</connection>
+    <developerConnection>scm:git:git@github.com:oliverwehrens/quant.git</developerConnection>
+    <url>scm:git:git@github.com:oliverwehrens/quant.git</url>
   </scm>
 
   <issueManagement>
